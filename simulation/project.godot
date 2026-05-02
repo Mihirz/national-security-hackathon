@@ -13,7 +13,7 @@ config_version=5
 config/name="Project ARGUS"
 config/description="Stratospheric solar-glider intercept simulation. Multi-modal sensor fusion (SWIR IR, EO camera, infrasound/pressure) versus a hypersonic cruise missile with evasion heuristics."
 run/main_scene="res://scenes/main.tscn"
-config/features=PackedStringArray("4.3", "Forward Plus")
+config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 
 [display]
