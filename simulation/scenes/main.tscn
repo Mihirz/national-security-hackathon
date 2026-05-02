@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://c1n6kovp848dv"]
+[gd_scene load_steps=21 format=3 uid="uid://c1n6kovp848dv"]
 
 [ext_resource type="Script" path="res://scripts/sim_constants.gd" id="1_const"]
 [ext_resource type="Script" path="res://scripts/sim_controller.gd" id="2_ctrl"]
@@ -6,15 +6,13 @@
 [ext_resource type="Script" path="res://scripts/hcm_target.gd" id="4_hcm"]
 [ext_resource type="Script" path="res://scripts/orbit_camera.gd" id="5_cam"]
 [ext_resource type="Script" path="res://scripts/hud.gd" id="6_hud"]
+[ext_resource type="Shader" uid="uid://bkwhcrvk2u3ku" path="res://scripts/sky.gdshader" id="7_sky"]
 
-[sub_resource type="ProceduralSkyMaterial" id="sky"]
-sky_top_color = Color(0.01, 0.02, 0.06, 1)
-sky_horizon_color = Color(0.1, 0.14, 0.25, 1)
-ground_bottom_color = Color(0, 0, 0, 1)
-ground_horizon_color = Color(0.05, 0.07, 0.1, 1)
+[sub_resource type="ShaderMaterial" id="sky_mat"]
+shader = ExtResource("7_sky")
 
 [sub_resource type="Sky" id="sky_res"]
-sky_material = SubResource("sky")
+sky_material = SubResource("sky_mat")
 
 [sub_resource type="Environment" id="env"]
 background_mode = 2
