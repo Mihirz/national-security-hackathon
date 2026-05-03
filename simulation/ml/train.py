@@ -82,6 +82,11 @@ def main():
     opt = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=1e-4)
     sched = torch.optim.lr_scheduler.CosineAnnealingLR(opt, T_max=args.epochs)
 
+    pos_w = 1.0
+    vel_w = 1.0
+    rs_w = 0.4
+    cls_w = 0.5
+
     for epoch in range(args.epochs):
         t0 = time.time()
         model.train()
@@ -92,11 +97,13 @@ def main():
             mask = cb > 0.5
             if mask.any():
                 rs_loss = F.smooth_l1_loss(out["rng_spd"][mask], rb[mask])
-                tj_loss = F.smooth_l1_loss(out["traj"][mask], tb[mask])
+                pos_loss = F.smooth_l1_loss(out["traj"][mask][..., :3], tb[mask][..., :3])
+                vel_loss = F.smooth_l1_loss(out["traj"][mask][..., 3:], tb[mask][..., 3:])
             else:
                 rs_loss = torch.zeros((), device=device)
-                tj_loss = torch.zeros((), device=device)
-            loss = cls_loss + 0.5 * rs_loss + 1.0 * tj_loss
+                pos_loss = torch.zeros((), device=device)
+                vel_loss = torch.zeros((), device=device)
+            loss = cls_w * cls_loss + rs_w * rs_loss + pos_w * pos_loss + vel_w * vel_loss
             opt.zero_grad()
             loss.backward()
             torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
@@ -105,7 +112,8 @@ def main():
 
         # Validation.
         model.eval()
-        v_cls_loss = 0.0; v_acc = 0.0; v_traj_mae = 0.0; n = 0; pos_n = 0
+        v_cls_loss = 0.0; v_acc = 0.0; v_pos_mae = 0.0; v_vel_mae = 0.0
+        v_dir_cos = 0.0; n = 0; pos_n = 0
         with torch.no_grad():
             for xb, cb, rb, tb in val_dl:
                 xb = xb.to(device); cb = cb.to(device); tb = tb.to(device)
@@ -114,13 +122,21 @@ def main():
                 v_acc += float(((out["cls"] > 0.0).float() == cb).float().sum())
                 mask = cb > 0.5
                 if mask.any():
-                    err = (out["traj"][mask] - tb[mask]).abs().mean() * pos_norm
-                    v_traj_mae += float(err) * int(mask.sum())
+                    p_err = (out["traj"][mask][..., :3] - tb[mask][..., :3]).abs().mean() * pos_norm
+                    v_err = (out["traj"][mask][..., 3:] - tb[mask][..., 3:]).abs().mean() * 2500.0
+                    # direction cosine on first-step velocity
+                    p_v = out["traj"][mask][:, 0, 3:]
+                    t_v = tb[mask][:, 0, 3:]
+                    cos = F.cosine_similarity(p_v, t_v, dim=-1).mean()
+                    v_pos_mae += float(p_err) * int(mask.sum())
+                    v_vel_mae += float(v_err) * int(mask.sum())
+                    v_dir_cos += float(cos) * int(mask.sum())
                     pos_n += int(mask.sum())
                 n += len(xb)
-        print(f"epoch {epoch+1:2d}  cls_loss={v_cls_loss/n:.4f}  "
-              f"acc={v_acc/n:.3f}  traj_mae={v_traj_mae/max(pos_n,1):.0f}m  "
-              f"({time.time()-t0:.1f}s)")
+        denom = max(pos_n, 1)
+        print(f"epoch {epoch+1:2d}  cls={v_cls_loss/n:.4f} acc={v_acc/n:.3f}  "
+              f"pos_mae={v_pos_mae/denom:.0f}m  vel_mae={v_vel_mae/denom:.0f}m/s  "
+              f"dir_cos={v_dir_cos/denom:.3f}  ({time.time()-t0:.1f}s)")
 
     out = Path(args.out)
     torch.save({

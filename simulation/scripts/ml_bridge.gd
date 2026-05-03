@@ -4,9 +4,10 @@ class_name MLBridge
 # ---------------------------------------------------------------------------
 # UDP bridge to the local PyTorch ArgusTransformer.
 #
-# Sends one feature-frame per call to query(); the server keeps a rolling
-# window per source, runs the transformer, and replies with classification,
-# range/speed, and a future trajectory (ARGUS-relative meters).
+# Sends one 18-feature frame per call (infrasound + stereo pressure + SWIR
+# + EO). The server keeps a rolling window per source, runs the transformer,
+# and replies with classification, range/speed, and a 10-step future
+# trajectory of (position, velocity) waypoints.
 # ---------------------------------------------------------------------------
 
 @export var host: String = "127.0.0.1"
@@ -16,7 +17,8 @@ var _udp := PacketPeerUDP.new()
 var last_p_target: float = 0.0
 var last_range_m: float = 0.0
 var last_speed_mps: float = 0.0
-var last_trajectory: Array[Vector3] = []
+var last_trajectory_pos: Array[Vector3] = []
+var last_trajectory_vel: Array[Vector3] = []
 var last_update_t: float = 0.0
 
 func _ready() -> void:
@@ -34,21 +36,29 @@ func _process(_dt: float) -> void:
 		last_p_target = float(parsed.get("p_target", 0.0))
 		last_range_m = float(parsed.get("range_m", 0.0))
 		last_speed_mps = float(parsed.get("speed_mps", 0.0))
-		var traj: Variant = parsed.get("trajectory", [])
-		if typeof(traj) == TYPE_ARRAY:
-			var pts: Array[Vector3] = []
-			for item in traj:
-				if typeof(item) == TYPE_ARRAY and item.size() >= 3:
-					pts.append(Vector3(float(item[0]), float(item[1]), float(item[2])))
-			last_trajectory = pts
+		last_trajectory_pos = _parse_v3_list(parsed.get("trajectory", []))
+		last_trajectory_vel = _parse_v3_list(parsed.get("velocity", []))
 		last_update_t = Time.get_ticks_msec() / 1000.0
 
-func query(infrasound: SensorInfrasound, swir: SensorSWIR, eo: SensorEO) -> void:
+func _parse_v3_list(arr: Variant) -> Array[Vector3]:
+	var out: Array[Vector3] = []
+	if typeof(arr) != TYPE_ARRAY:
+		return out
+	for item in arr:
+		if typeof(item) == TYPE_ARRAY and item.size() >= 3:
+			out.append(Vector3(float(item[0]), float(item[1]), float(item[2])))
+	return out
+
+func query(infrasound: SensorInfrasound,
+		   pressure,
+		   swir: SensorSWIR,
+		   eo: SensorEO) -> void:
 	# Feature order MUST match sim_physics.FEATURE_NAMES.
 	var feats: Array = [
 		infrasound.anomaly_score,
 		sin(infrasound.bearing_rad), cos(infrasound.bearing_rad),
 		infrasound.elevation_rad,
+		pressure.left_dp, pressure.right_dp,
 		swir.thermal_intensity,
 		sin(swir.bearing_rad), cos(swir.bearing_rad),
 		swir.elevation_rad,

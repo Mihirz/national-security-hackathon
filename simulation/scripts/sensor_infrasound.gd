@@ -36,16 +36,15 @@ func sample(argus_pos_m: Vector3, target_pos_m: Vector3, target_speed_mps: float
 	var rel := target_pos_m - argus_pos_m
 	var dist := rel.length()
 
-	# Inverse-square-ish acoustic attenuation, with a long usable range
-	# because infrasound carries enormous distances in the stratosphere.
-	var range_factor: float = clamp(1.0 - dist / SimConstants.INFRASOUND_RANGE_M, 0.0, 1.0)
+	# Quadratic range falloff so the signal varies with distance instead
+	# of pinning at 1 for any supersonic target.
+	var range_factor: float = pow(clamp(1.0 - dist / SimConstants.INFRASOUND_RANGE_M, 0.0, 1.0), 1.8)
 
-	# Shock energy scales with speed^2; HCM is loud, subsonic targets aren't.
-	var shock_energy: float = pow(max(target_speed_mps, 1.0) / 340.0, 2.0)
-	var raw: float = range_factor * (shock_energy / (1.0 + shock_energy)) * 1.6
-
-	# Background atmospheric noise.
-	raw += rng.randfn(0.0, 0.06)
+	# Soft mach-saturating shock term: mach=1 -> ~0.04, mach=5 -> ~0.5,
+	# mach=8 -> ~0.65. Encodes "louder when faster" without saturating.
+	var mach: float = max(target_speed_mps, 1.0) / 340.0
+	var shock: float = 1.0 - exp(-(mach * mach) / 90.0)
+	var raw: float = range_factor * shock + rng.randfn(0.0, 0.04)
 	anomaly_score = clamp(raw, 0.0, 1.0)
 	if anomaly_score < detection_floor:
 		anomaly_score = 0.0

@@ -28,6 +28,8 @@ class SensorReading:
     inf_anomaly: float
     inf_bearing_rad: float
     inf_elevation_rad: float
+    pressure_left: float
+    pressure_right: float
     swir_intensity: float
     swir_bearing_rad: float
     swir_elevation_rad: float
@@ -44,25 +46,47 @@ class SensorReading:
     target_range_m: float
     target_speed_mps: float
     target_alt_m: float
-    # ARGUS-relative target position in meters (truth) — used to build
-    # trajectory-prediction labels for the transformer.
+    # ARGUS-relative target position + velocity in meters (truth).
     rel_x_m: float
     rel_y_m: float
     rel_z_m: float
+    vel_x_mps: float
+    vel_y_mps: float
+    vel_z_mps: float
 
 
 def _gauss(rng: np.random.Generator, sigma: float) -> float:
     return float(rng.normal(0.0, sigma))
 
 
+def sample_pressure(rng, argus_pos, argus_heading_rad, target_pos, target_speed):
+    """Stereo wingtip transducers — sum encodes intensity, difference encodes
+    lateral bearing relative to glider body."""
+    rel = target_pos - argus_pos
+    dist = float(np.linalg.norm(rel))
+    range_factor = max(0.0, 1.0 - dist / INFRASOUND_RANGE_M) ** 1.8
+    mach = max(target_speed, 1.0) / 340.0
+    base = range_factor * (1.0 - math.exp(-(mach * mach) / 90.0))
+    rel_az = math.atan2(rel[2], rel[0]) - argus_heading_rad
+    lateral = math.sin(rel_az)
+    left = base * (0.5 + 0.5 * lateral) + _gauss(rng, 0.025)
+    right = base * (0.5 - 0.5 * lateral) + _gauss(rng, 0.025)
+    return max(0.0, min(1.5, left)), max(0.0, min(1.5, right))
+
+
 def sample_infrasound(rng, argus_pos, target_pos, target_speed):
     rel = target_pos - argus_pos
     dist = float(np.linalg.norm(rel))
-    range_factor = max(0.0, 1.0 - dist / INFRASOUND_RANGE_M)
-    shock = (max(target_speed, 1.0) / 340.0) ** 2
-    raw = range_factor * (shock / (1.0 + shock)) * 1.6 + _gauss(rng, 0.06)
+    # Quadratic range falloff so the signal actually varies with distance
+    # instead of saturating at every supersonic target.
+    range_factor = max(0.0, 1.0 - dist / INFRASOUND_RANGE_M) ** 1.8
+    mach = max(target_speed, 1.0) / 340.0
+    # Soft saturating function in mach. mach=1 -> 0.04, mach=5 -> 0.5,
+    # mach=8 -> 0.65.  Captures "louder when faster" without pinning at 1.
+    shock = 1.0 - math.exp(-(mach * mach) / 90.0)
+    raw = range_factor * shock + _gauss(rng, 0.04)
     anomaly = max(0.0, min(1.0, raw))
-    if anomaly < 0.05:
+    if anomaly < 0.04:
         anomaly = 0.0
     bearing = math.atan2(rel[2], rel[0]) + _gauss(rng, math.radians(8.0))
     horiz = math.hypot(rel[0], rel[2])
@@ -149,6 +173,8 @@ def roll_engagement(rng: np.random.Generator, n_steps: int = 200, dt: float = 0.
             argus_alt,
             math.sin(argus_phase) * argus_radius,
         ])
+        # Tangent to the loiter circle = glider heading.
+        argus_heading = argus_phase + math.pi / 2.0
 
         # propagate target with light evasion
         if is_target and step % 45 == 0:
@@ -170,12 +196,14 @@ def roll_engagement(rng: np.random.Generator, n_steps: int = 200, dt: float = 0.
             blackout = 0.0
 
         anom, ib, ie = sample_infrasound(rng, argus_pos, target_pos, speed)
+        pl, pr = sample_pressure(rng, argus_pos, argus_heading, target_pos, speed)
         si, sb, se, srng, slock = sample_swir(rng, argus_pos, target_pos, thermal)
         ec, eb, ee, erng, evis = sample_eo(rng, argus_pos, target_pos)
 
         rel = target_pos - argus_pos
         rows.append(SensorReading(
             inf_anomaly=anom, inf_bearing_rad=ib, inf_elevation_rad=ie,
+            pressure_left=pl, pressure_right=pr,
             swir_intensity=si, swir_bearing_rad=sb, swir_elevation_rad=se,
             swir_range_m=srng, swir_lock=slock,
             eo_class_conf=ec, eo_bearing_rad=eb, eo_elevation_rad=ee,
@@ -188,17 +216,22 @@ def roll_engagement(rng: np.random.Generator, n_steps: int = 200, dt: float = 0.
             rel_x_m=float(rel[0]),
             rel_y_m=float(rel[1]),
             rel_z_m=float(rel[2]),
+            vel_x_mps=float(velocity[0]),
+            vel_y_mps=float(velocity[1]),
+            vel_z_mps=float(velocity[2]),
         ))
     return rows
 
 
 FEATURE_NAMES = [
     "inf_anomaly", "inf_bearing_sin", "inf_bearing_cos", "inf_elev",
+    "pressure_left", "pressure_right",
     "swir_intensity", "swir_bearing_sin", "swir_bearing_cos", "swir_elev",
     "swir_range_norm", "swir_lock",
     "eo_class_conf", "eo_bearing_sin", "eo_bearing_cos", "eo_elev",
     "eo_range_norm", "eo_visual",
 ]
+INPUT_DIM = len(FEATURE_NAMES)  # 18
 
 
 def reading_to_features(r: SensorReading) -> np.ndarray:
@@ -206,6 +239,7 @@ def reading_to_features(r: SensorReading) -> np.ndarray:
         r.inf_anomaly,
         math.sin(r.inf_bearing_rad), math.cos(r.inf_bearing_rad),
         r.inf_elevation_rad,
+        r.pressure_left, r.pressure_right,
         r.swir_intensity,
         math.sin(r.swir_bearing_rad), math.cos(r.swir_bearing_rad),
         r.swir_elevation_rad,

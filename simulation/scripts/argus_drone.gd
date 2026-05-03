@@ -17,6 +17,7 @@ class_name ArgusDrone
 
 var truth_position_m: Vector3 = Vector3.ZERO
 var velocity_mps: Vector3 = Vector3.ZERO
+var heading_rad: float = 0.0
 var _phase: float = 0.0
 
 func _ready() -> void:
@@ -37,6 +38,8 @@ func _recompute(delta: float) -> void:
 	if delta > 0.0:
 		velocity_mps = (new_pos - truth_position_m) / delta
 	truth_position_m = new_pos
+	if velocity_mps.length() > 0.1:
+		heading_rad = atan2(velocity_mps.z, velocity_mps.x)
 
 	position = truth_position_m / SimConstants.RENDER_SCALE
 	# Face along velocity for a clean visual.

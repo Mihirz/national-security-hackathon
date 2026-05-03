@@ -19,15 +19,16 @@ from __future__ import annotations
 import torch
 import torch.nn as nn
 
-INPUT_DIM = 16
+INPUT_DIM = 18
 SEQ_LEN = 16
 HORIZON = 10
+TRAJ_OUT_DIM = 6  # (Δx, Δy, Δz, vx, vy, vz)
 TRAJ_DT = 1.0  # seconds between predicted waypoints
 
-D_MODEL = 64
+D_MODEL = 96
 N_HEADS = 4
-N_LAYERS = 2
-FFN_DIM = 128
+N_LAYERS = 3
+FFN_DIM = 192
 
 
 class ArgusTransformer(nn.Module):
@@ -63,7 +64,7 @@ class ArgusTransformer(nn.Module):
         self.head_traj = nn.Sequential(
             nn.Linear(d_model, ffn_dim),
             nn.GELU(),
-            nn.Linear(ffn_dim, horizon * 3),
+            nn.Linear(ffn_dim, horizon * TRAJ_OUT_DIM),
         )
 
     def forward(self, x: torch.Tensor) -> dict:
@@ -73,5 +74,5 @@ class ArgusTransformer(nn.Module):
         h = self.norm(h[:, -1])  # last token summarizes the window
         cls = self.head_cls(h).squeeze(-1)
         rs = self.head_rng_spd(h)
-        traj = self.head_traj(h).view(-1, self.horizon, 3)
+        traj = self.head_traj(h).view(-1, self.horizon, TRAJ_OUT_DIM)
         return {"cls": cls, "rng_spd": rs, "traj": traj}

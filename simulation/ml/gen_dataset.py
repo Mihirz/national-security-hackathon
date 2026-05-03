@@ -22,6 +22,7 @@ from sim_physics import (
 )
 
 POS_NORM_M = 100000.0  # match infer/bridge
+VEL_NORM_MPS = 2500.0
 
 
 def main():
@@ -59,8 +60,15 @@ def main():
             traj = []
             for h in range(1, args.horizon + 1):
                 rh = rows[end - 1 + h * stride]
-                traj.append([rh.rel_x_m, rh.rel_y_m, rh.rel_z_m])
-            traj = np.array(traj, dtype=np.float32) / POS_NORM_M
+                traj.append([
+                    rh.rel_x_m / POS_NORM_M,
+                    rh.rel_y_m / POS_NORM_M,
+                    rh.rel_z_m / POS_NORM_M,
+                    rh.vel_x_mps / VEL_NORM_MPS,
+                    rh.vel_y_mps / VEL_NORM_MPS,
+                    rh.vel_z_mps / VEL_NORM_MPS,
+                ])
+            traj = np.array(traj, dtype=np.float32)
             samples_X.append(window.astype(np.float32))
             samples_cls.append(np.float32(r_now.is_target))
             samples_rs.append(np.array([
@@ -87,6 +95,7 @@ def main():
         horizon=np.int32(args.horizon),
         traj_dt=np.float32(args.traj_dt),
         pos_norm_m=np.float32(POS_NORM_M),
+        vel_norm_mps=np.float32(VEL_NORM_MPS),
     )
     print(f"wrote {out}  X={X.shape}  Ytraj={Ytraj.shape}  ({time.time()-t0:.1f}s)")
     print(f"positive rate: {float(Ycls.mean()):.3f}")

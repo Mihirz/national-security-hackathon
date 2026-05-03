@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=3 uid="uid://c1n6kovp848dv"]
+[gd_scene load_steps=44 format=3 uid="uid://c1n6kovp848dv"]
 
 [ext_resource type="Script" path="res://scripts/sim_constants.gd" id="1_const"]
 [ext_resource type="Script" path="res://scripts/sim_controller.gd" id="2_ctrl"]
@@ -156,16 +156,35 @@ emission_enabled = true
 emission = Color(1, 0.3, 0.3, 1)
 emission_energy_multiplier = 1.2
 
-[sub_resource type="SphereMesh" id="m_estimate"]
-radius = 9.0
-height = 18.0
-
+; ----- estimate vector arrow (always-on-top) -----
 [sub_resource type="StandardMaterial3D" id="mat_estimate"]
-transparency = 1
-albedo_color = Color(0.2, 1, 0.7, 0.45)
+albedo_color = Color(0.15, 1.0, 0.95, 1)
 emission_enabled = true
-emission = Color(0.2, 1, 0.7, 1)
-emission_energy_multiplier = 1.4
+emission = Color(0.15, 1.0, 0.95, 1)
+emission_energy_multiplier = 2.5
+no_depth_test = true
+shading_mode = 0
+render_priority = 8
+
+[sub_resource type="CylinderMesh" id="m_arrow_shaft"]
+top_radius = 0.25
+bottom_radius = 0.25
+height = 4.5
+radial_segments = 12
+rings = 1
+
+[sub_resource type="CylinderMesh" id="m_arrow_tip"]
+top_radius = 0.0
+bottom_radius = 0.7
+height = 1.6
+radial_segments = 14
+rings = 1
+
+[sub_resource type="SphereMesh" id="m_arrow_origin"]
+radius = 0.55
+height = 1.1
+radial_segments = 14
+rings = 8
 
 [node name="Main" type="Node3D"]
 
@@ -267,31 +286,82 @@ light_energy = 4.0
 omni_range = 18.0
 
 ; ============================================================
-; Glider-mounted EO + IR sensor cameras. Each renders into a
-; SubViewport so the HUD can show their feeds bottom-right.
+; 360° EO + IR camera ring (4 viewports each at 0/90/180/270°
+; relative to the glider — together they cover all azimuths so
+; an HCM is visible from any direction). Single SensorFusion
+; estimate is produced by the transformer, not per-camera.
 ; ============================================================
 [node name="GimbalView" type="Node3D" parent="."]
 script = ExtResource("8_view")
 hcm_path = NodePath("../HCM")
 argus_path = NodePath("../Argus")
-eo_camera_path = NodePath("EOViewport/EOCamera")
-ir_camera_path = NodePath("IRViewport/IRCamera")
 
-[node name="EOViewport" type="SubViewport" parent="GimbalView"]
-size = Vector2i(320, 200)
+; --- EO ring ---
+[node name="EOViewport_F" type="SubViewport" parent="GimbalView"]
+size = Vector2i(160, 110)
 render_target_update_mode = 4
-
-[node name="EOCamera" type="Camera3D" parent="GimbalView/EOViewport"]
-fov = 18.0
+[node name="EOCamera_F" type="Camera3D" parent="GimbalView/EOViewport_F"]
+fov = 100.0
 near = 0.05
 far = 4000.0
 
-[node name="IRViewport" type="SubViewport" parent="GimbalView"]
-size = Vector2i(320, 200)
+[node name="EOViewport_R" type="SubViewport" parent="GimbalView"]
+size = Vector2i(160, 110)
 render_target_update_mode = 4
+[node name="EOCamera_R" type="Camera3D" parent="GimbalView/EOViewport_R"]
+fov = 100.0
+near = 0.05
+far = 4000.0
 
-[node name="IRCamera" type="Camera3D" parent="GimbalView/IRViewport"]
-fov = 18.0
+[node name="EOViewport_B" type="SubViewport" parent="GimbalView"]
+size = Vector2i(160, 110)
+render_target_update_mode = 4
+[node name="EOCamera_B" type="Camera3D" parent="GimbalView/EOViewport_B"]
+fov = 100.0
+near = 0.05
+far = 4000.0
+
+[node name="EOViewport_L" type="SubViewport" parent="GimbalView"]
+size = Vector2i(160, 110)
+render_target_update_mode = 4
+[node name="EOCamera_L" type="Camera3D" parent="GimbalView/EOViewport_L"]
+fov = 100.0
+near = 0.05
+far = 4000.0
+
+; --- IR ring (matching directions, IR environment) ---
+[node name="IRViewport_F" type="SubViewport" parent="GimbalView"]
+size = Vector2i(160, 110)
+render_target_update_mode = 4
+[node name="IRCamera_F" type="Camera3D" parent="GimbalView/IRViewport_F"]
+fov = 100.0
+near = 0.05
+far = 4000.0
+environment = SubResource("env_ir")
+
+[node name="IRViewport_R" type="SubViewport" parent="GimbalView"]
+size = Vector2i(160, 110)
+render_target_update_mode = 4
+[node name="IRCamera_R" type="Camera3D" parent="GimbalView/IRViewport_R"]
+fov = 100.0
+near = 0.05
+far = 4000.0
+environment = SubResource("env_ir")
+
+[node name="IRViewport_B" type="SubViewport" parent="GimbalView"]
+size = Vector2i(160, 110)
+render_target_update_mode = 4
+[node name="IRCamera_B" type="Camera3D" parent="GimbalView/IRViewport_B"]
+fov = 100.0
+near = 0.05
+far = 4000.0
+environment = SubResource("env_ir")
+
+[node name="IRViewport_L" type="SubViewport" parent="GimbalView"]
+size = Vector2i(160, 110)
+render_target_update_mode = 4
+[node name="IRCamera_L" type="Camera3D" parent="GimbalView/IRViewport_L"]
+fov = 100.0
 near = 0.05
 far = 4000.0
 environment = SubResource("env_ir")
@@ -301,8 +371,24 @@ mesh = SubResource("m_truth")
 surface_material_override/0 = SubResource("mat_truth")
 visible = false
 
-[node name="EstimateMarker" type="MeshInstance3D" parent="."]
-mesh = SubResource("m_estimate")
+; ----- Predicted-state vector arrow (cyan, always on top) -----
+[node name="EstimateMarker" type="Node3D" parent="."]
+
+[node name="Origin" type="MeshInstance3D" parent="EstimateMarker"]
+mesh = SubResource("m_arrow_origin")
+surface_material_override/0 = SubResource("mat_estimate")
+
+[node name="Shaft" type="MeshInstance3D" parent="EstimateMarker"]
+; rotate the cylinder so its length lies along -Z (forward) and offset
+; by half its height so the tail sits at the origin.
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, -2.25)
+mesh = SubResource("m_arrow_shaft")
+surface_material_override/0 = SubResource("mat_estimate")
+
+[node name="Tip" type="MeshInstance3D" parent="EstimateMarker"]
+; arrowhead at the front of the shaft (length 1.6, sits at -Z 5.3)
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, -5.3)
+mesh = SubResource("m_arrow_tip")
 surface_material_override/0 = SubResource("mat_estimate")
 
 [node name="BearingLines" type="Node3D" parent="."]
@@ -326,8 +412,8 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("6_hud")
-eo_viewport_path = NodePath("../GimbalView/EOViewport")
-ir_viewport_path = NodePath("../GimbalView/IRViewport")
+eo_paths = [NodePath("../GimbalView/EOViewport_F"), NodePath("../GimbalView/EOViewport_R"), NodePath("../GimbalView/EOViewport_B"), NodePath("../GimbalView/EOViewport_L")]
+ir_paths = [NodePath("../GimbalView/IRViewport_F"), NodePath("../GimbalView/IRViewport_R"), NodePath("../GimbalView/IRViewport_B"), NodePath("../GimbalView/IRViewport_L")]
 
 [node name="Controller" type="Node3D" parent="."]
 script = ExtResource("2_ctrl")

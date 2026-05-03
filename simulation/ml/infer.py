@@ -42,20 +42,23 @@ def load(model_path: str, device: str = "cpu"):
     return model, mean, std, seq_len, horizon, pos_norm
 
 
-def predict(model, mean, std, window: np.ndarray, pos_norm: float) -> dict:
+def predict(model, mean, std, window: np.ndarray, pos_norm: float, vel_norm: float = 2500.0) -> dict:
     with torch.no_grad():
         x = torch.from_numpy(window).float().unsqueeze(0)  # (1, T, F)
         x = (x - mean) / std
         out = model(x)
         cls_logit = float(out["cls"].squeeze())
         rs = out["rng_spd"].squeeze(0).cpu().numpy()
-        traj = out["traj"].squeeze(0).cpu().numpy() * pos_norm  # meters
+        traj = out["traj"].squeeze(0).cpu().numpy()  # (H, 6)
     p = 1.0 / (1.0 + np.exp(-cls_logit))
+    pos = traj[:, :3] * pos_norm    # meters
+    vel = traj[:, 3:] * vel_norm    # m/s
     return {
         "p_target": float(p),
         "range_m": float(rs[0]) * pos_norm,
-        "speed_mps": float(rs[1]) * 2500.0,
-        "trajectory": [[float(x), float(y), float(z)] for x, y, z in traj],
+        "speed_mps": float(rs[1]) * vel_norm,
+        "trajectory": [[float(p[0]), float(p[1]), float(p[2])] for p in pos],
+        "velocity":   [[float(v[0]), float(v[1]), float(v[2])] for v in vel],
     }
 
 
@@ -65,15 +68,16 @@ def cmd_demo(args):
     rows = roll_engagement(rng, n_steps=160, dt=0.1)
     feats = np.stack([reading_to_features(r) for r in rows])
     print(f"{'t':>4} {'truth':>6} {'p_t':>6} {'rng_pred':>9} {'rng_true':>9} "
-          f"{'next_dx':>9} {'next_dy':>9} {'next_dz':>9}")
+          f"{'next_dx':>9} {'next_dz':>9} {'vx_pred':>8} {'vz_pred':>8}")
     for end in range(seq_len, len(rows), 8):
         window = feats[end - seq_len:end]
         r = rows[end - 1]
         out = predict(model, mean, std, window, pos_norm)
-        n0 = out["trajectory"][0]
+        p0 = out["trajectory"][0]
+        v0 = out["velocity"][0]
         print(f"{end:>4} {r.is_target:>6d} {out['p_target']:>6.3f} "
               f"{out['range_m']:>9.0f} {r.target_range_m:>9.0f} "
-              f"{n0[0]:>9.0f} {n0[1]:>9.0f} {n0[2]:>9.0f}")
+              f"{p0[0]:>9.0f} {p0[2]:>9.0f} {v0[0]:>8.0f} {v0[2]:>8.0f}")
 
 
 def cmd_serve(args):
@@ -92,8 +96,8 @@ def cmd_serve(args):
             msg = json.loads(data.decode("utf-8"))
             if "window" in msg:
                 w = np.array(msg["window"], dtype=np.float32)
-                if w.shape != (seq_len, 16):
-                    raise ValueError(f"window shape {w.shape}, want ({seq_len},16)")
+                if w.shape[0] != seq_len:
+                    raise ValueError(f"window shape {w.shape}, want ({seq_len},*)")
                 out = predict(model, mean, std, w, pos_norm)
             else:
                 if "features" in msg:
