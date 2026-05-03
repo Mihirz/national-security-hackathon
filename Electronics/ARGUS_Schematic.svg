@@ -1,0 +1,659 @@
+<svg viewBox="0 0 1600 1100" xmlns="http://www.w3.org/2000/svg">
+<rect width="1600" height="1100" fill="#ffffff"/>
+<rect x="10" y="10" width="1580" height="1080" fill="none" stroke="#1e293b" stroke-width="2" rx="0"/>
+<rect x="14" y="14" width="1572" height="1072" fill="none" stroke="#94a3b8" stroke-width="0.5" rx="0"/>
+<rect x="1180" y="1010" width="400" height="70" fill="#f1f5f9" stroke="#1e293b" stroke-width="1.5" rx="0"/>
+<line x1="1180" y1="1035" x2="1580" y2="1035" stroke="#1e293b" stroke-width="0.5"/>
+<line x1="1180" y1="1058" x2="1580" y2="1058" stroke="#1e293b" stroke-width="0.5"/>
+<line x1="1380" y1="1010" x2="1380" y2="1035" stroke="#1e293b" stroke-width="0.5"/>
+<line x1="1460" y1="1035" x2="1460" y2="1058" stroke="#1e293b" stroke-width="0.5"/>
+<text x="1280" y="1027" font-family="Consolas, monospace" font-size="12" fill="#0f172a" text-anchor="middle" font-weight="bold">PROJECT ARGUS — ELECTRONICS</text>
+<text x="1480" y="1027" font-family="Consolas, monospace" font-size="10" fill="#64748b" text-anchor="middle" font-weight="normal">Sheet 1 of 1</text>
+<text x="1320" y="1050" font-family="Consolas, monospace" font-size="9" fill="#475569" text-anchor="middle" font-weight="normal">Main Avionics Board — Power + Sensors + Compute</text>
+<text x="1520" y="1050" font-family="Consolas, monospace" font-size="9" fill="#475569" text-anchor="middle" font-weight="normal">Rev A</text>
+<text x="1320" y="1072" font-family="Consolas, monospace" font-size="9" fill="#64748b" text-anchor="middle" font-weight="normal">National Security Hackathon · May 2026</text>
+<text x="1520" y="1072" font-family="Consolas, monospace" font-size="9" fill="#0f172a" text-anchor="middle" font-weight="bold">ARGUS-SCH-001</text>
+<text x="30" y="40" font-family="Helvetica, sans-serif" font-size="13" fill="#dc2626" text-anchor="start" font-weight="bold">POWER REGULATION</text>
+<text x="600" y="40" font-family="Helvetica, sans-serif" font-size="13" fill="#dc2626" text-anchor="start" font-weight="bold">EDGE COMPUTE</text>
+<text x="30" y="420" font-family="Helvetica, sans-serif" font-size="13" fill="#dc2626" text-anchor="start" font-weight="bold">SENSOR INTERFACES</text>
+<text x="830" y="40" font-family="Helvetica, sans-serif" font-size="13" fill="#dc2626" text-anchor="start" font-weight="bold">COMMUNICATIONS</text>
+<text x="830" y="420" font-family="Helvetica, sans-serif" font-size="13" fill="#dc2626" text-anchor="start" font-weight="bold">SUPPORT / PROTECTION</text>
+<line x1="20" y1="410" x2="1580" y2="410" stroke="#94a3b8" stroke-width="0.5" stroke-dasharray="8,4"/>
+<line x1="580" y1="20" x2="580" y2="410" stroke="#94a3b8" stroke-width="0.5" stroke-dasharray="8,4"/>
+<line x1="820" y1="20" x2="820" y2="1000" stroke="#94a3b8" stroke-width="0.5" stroke-dasharray="8,4"/>
+<rect x="40" y="70" width="60" height="50" fill="#f8fafc" stroke="#1e293b" stroke-width="1.5" rx="0"/>
+<text x="70" y="100" font-family="Consolas, monospace" font-size="10" fill="#1e293b" text-anchor="middle" font-weight="bold">J1</text>
+<text x="42" y="66" font-family="Consolas, monospace" font-size="9" fill="#dc2626" text-anchor="start" font-weight="bold">J1</text>
+<text x="42" y="130" font-family="Consolas, monospace" font-size="8" fill="#0369a1" text-anchor="start" font-weight="normal">XT60 Solar In</text>
+<line x1="100" y1="82" x2="130" y2="82" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="100" y1="105" x2="130" y2="105" stroke="#1e40af" stroke-width="1.2"/>
+<text x="105" y="79" font-family="Consolas, monospace" font-size="8" fill="#7c3aed" text-anchor="start" font-weight="bold">VSOLAR+</text>
+<text x="105" y="115" font-family="Consolas, monospace" font-size="8" fill="#7c3aed" text-anchor="start" font-weight="bold">GND</text>
+<rect x="140" y="62" width="110" height="60" fill="#f8fafc" stroke="#1e293b" stroke-width="1.5" rx="0"/>
+<text x="195.0" y="96.0" font-family="Consolas, monospace" font-size="10" fill="#1e293b" text-anchor="middle" font-weight="bold">SPV1050</text>
+<text x="142" y="58" font-family="Consolas, monospace" font-size="9" fill="#dc2626" text-anchor="start" font-weight="bold">U1</text>
+<line x1="128" y1="82.0" x2="140" y2="82.0" stroke="#1e40af" stroke-width="1.2"/>
+<text x="143" y="85.0" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">VIN+</text>
+<line x1="128" y1="102.0" x2="140" y2="102.0" stroke="#1e40af" stroke-width="1.2"/>
+<text x="143" y="105.0" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">GND</text>
+<line x1="250" y1="82.0" x2="262" y2="82.0" stroke="#1e40af" stroke-width="1.2"/>
+<text x="247" y="85.0" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="end" font-weight="normal">VBAT+</text>
+<line x1="250" y1="102.0" x2="262" y2="102.0" stroke="#1e40af" stroke-width="1.2"/>
+<text x="247" y="105.0" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="end" font-weight="normal">VBAT-</text>
+<line x1="105" y1="130" x2="105" y2="144" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="99" y1="144" x2="111" y2="144" stroke="#1e293b" stroke-width="1.5"/>
+<line x1="99" y1="148" x2="111" y2="148" stroke="#1e293b" stroke-width="1.5"/>
+<line x1="105" y1="148" x2="105" y2="162" stroke="#1e40af" stroke-width="1.2"/>
+<text x="113" y="138" font-family="Consolas, monospace" font-size="9" fill="#dc2626" text-anchor="start" font-weight="bold">C1</text>
+<text x="113" y="150" font-family="Consolas, monospace" font-size="8" fill="#0369a1" text-anchor="start" font-weight="normal">22uF</text>
+<line x1="105" y1="166" x2="105" y2="174" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="99" y1="174" x2="111" y2="174" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="101" y1="177" x2="109" y2="177" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="103" y1="180" x2="107" y2="180" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="105" y1="105" x2="105" y2="130" stroke="#1e40af" stroke-width="1.2"/>
+<rect x="310" y="62" width="80" height="60" fill="#fefce8" stroke="#1e293b" stroke-width="1.5" rx="0"/>
+<text x="350" y="97" font-family="Consolas, monospace" font-size="10" fill="#1e293b" text-anchor="middle" font-weight="bold">BT1</text>
+<text x="312" y="58" font-family="Consolas, monospace" font-size="9" fill="#dc2626" text-anchor="start" font-weight="bold">BT1</text>
+<text x="310" y="132" font-family="Consolas, monospace" font-size="8" fill="#0369a1" text-anchor="start" font-weight="normal">4S LiPo 14.8V 10Ah</text>
+<text x="318" y="80" font-family="Consolas, monospace" font-size="12" fill="#dc2626" text-anchor="start" font-weight="bold">+</text>
+<text x="370" y="80" font-family="Consolas, monospace" font-size="12" fill="#1e40af" text-anchor="start" font-weight="bold">-</text>
+<line x1="262" y1="82.0" x2="310" y2="82.0" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="262" y1="102.0" x2="310" y2="102.0" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="390" y1="82" x2="560" y2="82" stroke="#dc2626" stroke-width="2"/>
+<text x="420" y="78" font-family="Consolas, monospace" font-size="8" fill="#7c3aed" text-anchor="start" font-weight="bold">V_BAT (14.8V)</text>
+<circle cx="390" cy="82" r="3" fill="#dc2626"/>
+<rect x="140" y="175" width="110" height="70" fill="#f8fafc" stroke="#1e293b" stroke-width="1.5" rx="0"/>
+<text x="195.0" y="214.0" font-family="Consolas, monospace" font-size="10" fill="#1e293b" text-anchor="middle" font-weight="bold">TPS54560</text>
+<text x="142" y="171" font-family="Consolas, monospace" font-size="9" fill="#dc2626" text-anchor="start" font-weight="bold">U2</text>
+<line x1="128" y1="192.5" x2="140" y2="192.5" stroke="#1e40af" stroke-width="1.2"/>
+<text x="143" y="195.5" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">VIN</text>
+<line x1="128" y1="210.0" x2="140" y2="210.0" stroke="#1e40af" stroke-width="1.2"/>
+<text x="143" y="213.0" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">EN</text>
+<line x1="128" y1="227.5" x2="140" y2="227.5" stroke="#1e40af" stroke-width="1.2"/>
+<text x="143" y="230.5" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">GND</text>
+<line x1="250" y1="192.5" x2="262" y2="192.5" stroke="#1e40af" stroke-width="1.2"/>
+<text x="247" y="195.5" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="end" font-weight="normal">SW</text>
+<line x1="250" y1="210.0" x2="262" y2="210.0" stroke="#1e40af" stroke-width="1.2"/>
+<text x="247" y="213.0" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="end" font-weight="normal">FB</text>
+<line x1="250" y1="227.5" x2="262" y2="227.5" stroke="#1e40af" stroke-width="1.2"/>
+<text x="247" y="230.5" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="end" font-weight="normal">BST</text>
+<line x1="128" y1="192.5" x2="128" y2="82" stroke="#dc2626" stroke-width="1.2"/>
+<line x1="128" y1="82" x2="128" y2="192.5" stroke="#dc2626" stroke-width="1.2"/>
+<circle cx="128" cy="82" r="3" fill="#dc2626"/>
+<text x="270" y="185" font-family="Consolas, monospace" font-size="9" fill="#dc2626" text-anchor="start" font-weight="bold">L1</text>
+<text x="270" y="197" font-family="Consolas, monospace" font-size="8" fill="#0369a1" text-anchor="start" font-weight="normal">10uH</text>
+<line x1="262" y1="192.5" x2="270" y2="192.5" stroke="#1e40af" stroke-width="1.2"/>
+<path d="M270,192.5 C273,184.5 279,184.5 282,192.5 C285,184.5 291,184.5 294,192.5 C297,184.5 303,184.5 306,192.5" fill="none" stroke="#1e293b" stroke-width="1.3"/>
+<line x1="306" y1="192.5" x2="330" y2="192.5" stroke="#1e40af" stroke-width="1.2"/>
+<text x="335" y="188.5" font-family="Consolas, monospace" font-size="8" fill="#7c3aed" text-anchor="start" font-weight="bold">5V0</text>
+<line x1="335" y1="197.5" x2="335" y2="211.5" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="329" y1="211.5" x2="341" y2="211.5" stroke="#1e293b" stroke-width="1.5"/>
+<line x1="329" y1="215.5" x2="341" y2="215.5" stroke="#1e293b" stroke-width="1.5"/>
+<line x1="335" y1="215.5" x2="335" y2="229.5" stroke="#1e40af" stroke-width="1.2"/>
+<text x="343" y="205.5" font-family="Consolas, monospace" font-size="9" fill="#dc2626" text-anchor="start" font-weight="bold">C2</text>
+<text x="343" y="217.5" font-family="Consolas, monospace" font-size="8" fill="#0369a1" text-anchor="start" font-weight="normal">22uF x2</text>
+<line x1="335" y1="233.5" x2="335" y2="241.5" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="329" y1="241.5" x2="341" y2="241.5" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="331" y1="244.5" x2="339" y2="244.5" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="333" y1="247.5" x2="337" y2="247.5" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="280" y1="228" x2="288" y2="228" stroke="#1e40af" stroke-width="1.2"/>
+<polyline points="288,228 291,224 294,232 297,224 300,232 303,224 306,232 308,228" fill="none" stroke="#1e293b" stroke-width="1.2"/>
+<line x1="308" y1="228" x2="316" y2="228" stroke="#1e40af" stroke-width="1.2"/>
+<text x="286" y="220" font-family="Consolas, monospace" font-size="9" fill="#dc2626" text-anchor="start" font-weight="bold">R1</text>
+<text x="286" y="240" font-family="Consolas, monospace" font-size="8" fill="#0369a1" text-anchor="start" font-weight="normal">100k</text>
+<line x1="280" y1="255" x2="288" y2="255" stroke="#1e40af" stroke-width="1.2"/>
+<polyline points="288,255 291,251 294,259 297,251 300,259 303,251 306,259 308,255" fill="none" stroke="#1e293b" stroke-width="1.2"/>
+<line x1="308" y1="255" x2="316" y2="255" stroke="#1e40af" stroke-width="1.2"/>
+<text x="286" y="247" font-family="Consolas, monospace" font-size="9" fill="#dc2626" text-anchor="start" font-weight="bold">R2</text>
+<text x="286" y="267" font-family="Consolas, monospace" font-size="8" fill="#0369a1" text-anchor="start" font-weight="normal">24.9k</text>
+<line x1="262" y1="210.0" x2="270" y2="210.0" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="270" y1="210.0" x2="270" y2="232" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="270" y1="232" x2="280" y2="232" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="316" y1="232" x2="330" y2="232" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="330" y1="232" x2="330" y2="192.5" stroke="#1e40af" stroke-width="1.2"/>
+<circle cx="330" cy="192.5" r="3" fill="#1e40af"/>
+<line x1="280" y1="259" x2="270" y2="259" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="270" y1="259" x2="270" y2="232" stroke="#1e40af" stroke-width="1.2"/>
+<circle cx="270" cy="232" r="3" fill="#1e40af"/>
+<line x1="316" y1="263" x2="316" y2="271" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="310" y1="271" x2="322" y2="271" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="312" y1="274" x2="320" y2="274" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="314" y1="277" x2="318" y2="277" stroke="#1e40af" stroke-width="1.2"/>
+<rect x="140" y="310" width="100" height="55" fill="#f8fafc" stroke="#1e293b" stroke-width="1.5" rx="0"/>
+<text x="190.0" y="341.5" font-family="Consolas, monospace" font-size="10" fill="#1e293b" text-anchor="middle" font-weight="bold">TLV1117</text>
+<text x="142" y="306" font-family="Consolas, monospace" font-size="9" fill="#dc2626" text-anchor="start" font-weight="bold">U3</text>
+<line x1="128" y1="328.3333333333333" x2="140" y2="328.3333333333333" stroke="#1e40af" stroke-width="1.2"/>
+<text x="143" y="331.3333333333333" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">IN</text>
+<line x1="128" y1="346.6666666666667" x2="140" y2="346.6666666666667" stroke="#1e40af" stroke-width="1.2"/>
+<text x="143" y="349.6666666666667" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">GND</text>
+<line x1="240" y1="328.3333333333333" x2="252" y2="328.3333333333333" stroke="#1e40af" stroke-width="1.2"/>
+<text x="237" y="331.3333333333333" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="end" font-weight="normal">OUT</text>
+<line x1="128" y1="328.3333333333333" x2="128" y2="192.5" stroke="#1e40af" stroke-width="1"/>
+<line x1="128" y1="192.5" x2="128" y2="328.3333333333333" stroke="#1e40af" stroke-width="1"/>
+<circle cx="128" cy="192.5" r="2" fill="#1e40af"/>
+<text x="257" y="324.3333333333333" font-family="Consolas, monospace" font-size="8" fill="#7c3aed" text-anchor="start" font-weight="bold">3V3</text>
+<line x1="257" y1="333.3333333333333" x2="257" y2="347.3333333333333" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="251" y1="347.3333333333333" x2="263" y2="347.3333333333333" stroke="#1e293b" stroke-width="1.5"/>
+<line x1="251" y1="351.3333333333333" x2="263" y2="351.3333333333333" stroke="#1e293b" stroke-width="1.5"/>
+<line x1="257" y1="351.3333333333333" x2="257" y2="365.3333333333333" stroke="#1e40af" stroke-width="1.2"/>
+<text x="265" y="341.3333333333333" font-family="Consolas, monospace" font-size="9" fill="#dc2626" text-anchor="start" font-weight="bold">C3</text>
+<text x="265" y="353.3333333333333" font-family="Consolas, monospace" font-size="8" fill="#0369a1" text-anchor="start" font-weight="normal">10uF</text>
+<line x1="257" y1="369.3333333333333" x2="257" y2="377.3333333333333" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="251" y1="377.3333333333333" x2="263" y2="377.3333333333333" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="253" y1="380.3333333333333" x2="261" y2="380.3333333333333" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="255" y1="383.3333333333333" x2="259" y2="383.3333333333333" stroke="#1e40af" stroke-width="1.2"/>
+<rect x="340" y="310" width="100" height="55" fill="#f8fafc" stroke="#1e293b" stroke-width="1.5" rx="0"/>
+<text x="390.0" y="341.5" font-family="Consolas, monospace" font-size="10" fill="#1e293b" text-anchor="middle" font-weight="bold">AP2112</text>
+<text x="342" y="306" font-family="Consolas, monospace" font-size="9" fill="#dc2626" text-anchor="start" font-weight="bold">U4</text>
+<line x1="328" y1="328.3333333333333" x2="340" y2="328.3333333333333" stroke="#1e40af" stroke-width="1.2"/>
+<text x="343" y="331.3333333333333" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">IN</text>
+<line x1="328" y1="346.6666666666667" x2="340" y2="346.6666666666667" stroke="#1e40af" stroke-width="1.2"/>
+<text x="343" y="349.6666666666667" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">GND</text>
+<line x1="440" y1="328.3333333333333" x2="452" y2="328.3333333333333" stroke="#1e40af" stroke-width="1.2"/>
+<text x="437" y="331.3333333333333" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="end" font-weight="normal">OUT</text>
+<line x1="252" y1="328.3333333333333" x2="310" y2="328.3333333333333" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="310" y1="328.3333333333333" x2="310" y2="328.3333333333333" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="310" y1="328.3333333333333" x2="328" y2="328.3333333333333" stroke="#1e40af" stroke-width="1.2"/>
+<circle cx="310" cy="328.3333333333333" r="2" fill="#1e40af"/>
+<text x="457" y="324.3333333333333" font-family="Consolas, monospace" font-size="8" fill="#7c3aed" text-anchor="start" font-weight="bold">1V8</text>
+<line x1="457" y1="333.3333333333333" x2="457" y2="347.3333333333333" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="451" y1="347.3333333333333" x2="463" y2="347.3333333333333" stroke="#1e293b" stroke-width="1.5"/>
+<line x1="451" y1="351.3333333333333" x2="463" y2="351.3333333333333" stroke="#1e293b" stroke-width="1.5"/>
+<line x1="457" y1="351.3333333333333" x2="457" y2="365.3333333333333" stroke="#1e40af" stroke-width="1.2"/>
+<text x="465" y="341.3333333333333" font-family="Consolas, monospace" font-size="9" fill="#dc2626" text-anchor="start" font-weight="bold">C4</text>
+<text x="465" y="353.3333333333333" font-family="Consolas, monospace" font-size="8" fill="#0369a1" text-anchor="start" font-weight="normal">1uF</text>
+<line x1="457" y1="369.3333333333333" x2="457" y2="377.3333333333333" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="451" y1="377.3333333333333" x2="463" y2="377.3333333333333" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="453" y1="380.3333333333333" x2="461" y2="380.3333333333333" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="455" y1="383.3333333333333" x2="459" y2="383.3333333333333" stroke="#1e40af" stroke-width="1.2"/>
+<rect x="430" y="140" width="90" height="55" fill="#f8fafc" stroke="#1e293b" stroke-width="1.5" rx="0"/>
+<text x="475" y="172" font-family="Consolas, monospace" font-size="10" fill="#1e293b" text-anchor="middle" font-weight="bold">ESC x2</text>
+<text x="432" y="136" font-family="Consolas, monospace" font-size="9" fill="#dc2626" text-anchor="start" font-weight="bold">M1/M2</text>
+<text x="430" y="205" font-family="Consolas, monospace" font-size="8" fill="#0369a1" text-anchor="start" font-weight="normal">BLDC 200W ea</text>
+<line x1="430" y1="155" x2="400" y2="155" stroke="#dc2626" stroke-width="1.2"/>
+<line x1="400" y1="155" x2="400" y2="82" stroke="#dc2626" stroke-width="1.2"/>
+<circle cx="400" cy="82" r="3" fill="#dc2626"/>
+<line x1="520" y1="160" x2="550" y2="160" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="520" y1="175" x2="550" y2="175" stroke="#1e40af" stroke-width="1.2"/>
+<text x="525" y="157" font-family="Consolas, monospace" font-size="8" fill="#7c3aed" text-anchor="start" font-weight="bold">PWM0</text>
+<text x="525" y="185" font-family="Consolas, monospace" font-size="8" fill="#7c3aed" text-anchor="start" font-weight="bold">PWM1</text>
+<text x="490" y="205" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">to Props</text>
+<rect x="620" y="70" width="180" height="140" fill="#f8fafc" stroke="#1e293b" stroke-width="1.5" rx="0"/>
+<text x="710.0" y="144.0" font-family="Consolas, monospace" font-size="10" fill="#1e293b" text-anchor="middle" font-weight="bold">Jetson Orin Nano
+8GB · 40 TOPS</text>
+<text x="622" y="66" font-family="Consolas, monospace" font-size="9" fill="#dc2626" text-anchor="start" font-weight="bold">U5</text>
+<line x1="608" y1="87.5" x2="620" y2="87.5" stroke="#1e40af" stroke-width="1.2"/>
+<text x="623" y="90.5" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">5V_IN</text>
+<line x1="608" y1="105.0" x2="620" y2="105.0" stroke="#1e40af" stroke-width="1.2"/>
+<text x="623" y="108.0" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">GND</text>
+<line x1="608" y1="122.5" x2="620" y2="122.5" stroke="#1e40af" stroke-width="1.2"/>
+<text x="623" y="125.5" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">SPI0_CLK</text>
+<line x1="608" y1="140.0" x2="620" y2="140.0" stroke="#1e40af" stroke-width="1.2"/>
+<text x="623" y="143.0" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">SPI0_MOSI</text>
+<line x1="608" y1="157.5" x2="620" y2="157.5" stroke="#1e40af" stroke-width="1.2"/>
+<text x="623" y="160.5" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">SPI0_MISO</text>
+<line x1="608" y1="175.0" x2="620" y2="175.0" stroke="#1e40af" stroke-width="1.2"/>
+<text x="623" y="178.0" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">SPI0_CS0</text>
+<line x1="608" y1="192.5" x2="620" y2="192.5" stroke="#1e40af" stroke-width="1.2"/>
+<text x="623" y="195.5" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">SPI0_CS1</text>
+<line x1="800" y1="87.5" x2="812" y2="87.5" stroke="#1e40af" stroke-width="1.2"/>
+<text x="797" y="90.5" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="end" font-weight="normal">I2S_BCLK</text>
+<line x1="800" y1="105.0" x2="812" y2="105.0" stroke="#1e40af" stroke-width="1.2"/>
+<text x="797" y="108.0" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="end" font-weight="normal">I2S_LRCK</text>
+<line x1="800" y1="122.5" x2="812" y2="122.5" stroke="#1e40af" stroke-width="1.2"/>
+<text x="797" y="125.5" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="end" font-weight="normal">I2S_DOUT</text>
+<line x1="800" y1="140.0" x2="812" y2="140.0" stroke="#1e40af" stroke-width="1.2"/>
+<text x="797" y="143.0" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="end" font-weight="normal">CSI_D0±</text>
+<line x1="800" y1="157.5" x2="812" y2="157.5" stroke="#1e40af" stroke-width="1.2"/>
+<text x="797" y="160.5" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="end" font-weight="normal">CSI_D1±</text>
+<line x1="800" y1="175.0" x2="812" y2="175.0" stroke="#1e40af" stroke-width="1.2"/>
+<text x="797" y="178.0" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="end" font-weight="normal">CSI_CLK±</text>
+<line x1="800" y1="192.5" x2="812" y2="192.5" stroke="#1e40af" stroke-width="1.2"/>
+<text x="797" y="195.5" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="end" font-weight="normal">USB2.0</text>
+<line x1="608" y1="87.5" x2="560" y2="87.5" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="560" y1="87.5" x2="560" y2="192.5" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="560" y1="192.5" x2="340" y2="192.5" stroke="#1e40af" stroke-width="1.2"/>
+<circle cx="340" cy="192.5" r="2" fill="#1e40af"/>
+<line x1="590" y1="65" x2="590" y2="79" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="584" y1="79" x2="596" y2="79" stroke="#1e293b" stroke-width="1.5"/>
+<line x1="584" y1="83" x2="596" y2="83" stroke="#1e293b" stroke-width="1.5"/>
+<line x1="590" y1="83" x2="590" y2="97" stroke="#1e40af" stroke-width="1.2"/>
+<text x="598" y="73" font-family="Consolas, monospace" font-size="9" fill="#dc2626" text-anchor="start" font-weight="bold">C5</text>
+<text x="598" y="85" font-family="Consolas, monospace" font-size="8" fill="#0369a1" text-anchor="start" font-weight="normal">100uF</text>
+<line x1="590" y1="55" x2="590" y2="65" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="590" y1="55" x2="590" y2="47" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="584" y1="47" x2="596" y2="47" stroke="#1e40af" stroke-width="1.2"/>
+<text x="590" y="43" font-family="Consolas, monospace" font-size="7" fill="#dc2626" text-anchor="middle" font-weight="bold">5V0</text>
+<line x1="590" y1="100" x2="590" y2="108" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="584" y1="108" x2="596" y2="108" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="586" y1="111" x2="594" y2="111" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="588" y1="114" x2="592" y2="114" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="595" y1="220" x2="595" y2="234" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="589" y1="234" x2="601" y2="234" stroke="#1e293b" stroke-width="1.5"/>
+<line x1="589" y1="238" x2="601" y2="238" stroke="#1e293b" stroke-width="1.5"/>
+<line x1="595" y1="238" x2="595" y2="252" stroke="#1e40af" stroke-width="1.2"/>
+<text x="603" y="228" font-family="Consolas, monospace" font-size="9" fill="#dc2626" text-anchor="start" font-weight="bold">C6</text>
+<text x="603" y="240" font-family="Consolas, monospace" font-size="8" fill="#0369a1" text-anchor="start" font-weight="normal">0.1uF</text>
+<line x1="595" y1="256" x2="595" y2="264" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="589" y1="264" x2="601" y2="264" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="591" y1="267" x2="599" y2="267" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="593" y1="270" x2="597" y2="270" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="595" y1="210" x2="595" y2="220" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="595" y1="210" x2="595" y2="202" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="589" y1="202" x2="601" y2="202" stroke="#1e40af" stroke-width="1.2"/>
+<text x="595" y="198" font-family="Consolas, monospace" font-size="7" fill="#dc2626" text-anchor="middle" font-weight="bold">3V3</text>
+<text x="805" y="100" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">SPI1_CLK</text>
+<text x="805" y="115" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">SPI1_MOSI</text>
+<text x="805" y="130" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">SPI1_MISO</text>
+<text x="805" y="145" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">SPI1_CS</text>
+<line x1="800" y1="97" x2="808" y2="97" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="800" y1="112" x2="808" y2="112" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="800" y1="127" x2="808" y2="127" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="800" y1="142" x2="808" y2="142" stroke="#1e40af" stroke-width="1.2"/>
+<text x="805" y="165" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">UART0_TX</text>
+<text x="805" y="180" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">UART0_RX</text>
+<text x="805" y="200" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">UART1_TX</text>
+<text x="805" y="215" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">UART1_RX</text>
+<line x1="800" y1="162" x2="808" y2="162" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="800" y1="177" x2="808" y2="177" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="800" y1="197" x2="808" y2="197" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="800" y1="212" x2="808" y2="212" stroke="#1e40af" stroke-width="1.2"/>
+<text x="805" y="240" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">I2C0_SDA</text>
+<text x="805" y="255" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">I2C0_SCL</text>
+<text x="805" y="275" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">I2C1_SDA</text>
+<text x="805" y="290" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">I2C1_SCL</text>
+<line x1="800" y1="237" x2="808" y2="237" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="800" y1="252" x2="808" y2="252" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="800" y1="272" x2="808" y2="272" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="800" y1="287" x2="808" y2="287" stroke="#1e40af" stroke-width="1.2"/>
+<text x="805" y="315" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">GPIO_31</text>
+<text x="805" y="330" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">GPIO_29</text>
+<text x="805" y="345" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">GPIO_15</text>
+<text x="805" y="360" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">GPIO_7</text>
+<line x1="800" y1="312" x2="808" y2="312" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="800" y1="327" x2="808" y2="327" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="800" y1="342" x2="808" y2="342" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="800" y1="357" x2="808" y2="357" stroke="#1e40af" stroke-width="1.2"/>
+<text x="805" y="380" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">PWM0</text>
+<text x="805" y="395" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">PWM1</text>
+<line x1="800" y1="377" x2="808" y2="377" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="800" y1="392" x2="808" y2="392" stroke="#1e40af" stroke-width="1.2"/>
+<rect x="620" y="240" width="100" height="40" fill="#f8fafc" stroke="#1e293b" stroke-width="1.5" rx="0"/>
+<text x="670" y="265" font-family="Consolas, monospace" font-size="9" fill="#1e293b" text-anchor="middle" font-weight="bold">NVMe SSD</text>
+<text x="622" y="236" font-family="Consolas, monospace" font-size="9" fill="#dc2626" text-anchor="start" font-weight="bold">U6</text>
+<text x="622" y="290" font-family="Consolas, monospace" font-size="8" fill="#0369a1" text-anchor="start" font-weight="normal">256GB M.2</text>
+<line x1="670" y1="220" x2="670" y2="240" stroke="#1e40af" stroke-width="1.2"/>
+<text x="675" y="232" font-family="Consolas, monospace" font-size="8" fill="#7c3aed" text-anchor="start" font-weight="bold">PCIe x4</text>
+<rect x="880" y="60" width="110" height="70" fill="#f8fafc" stroke="#1e293b" stroke-width="1.5" rx="0"/>
+<text x="935.0" y="99.0" font-family="Consolas, monospace" font-size="10" fill="#1e293b" text-anchor="middle" font-weight="bold">RFM95W</text>
+<text x="882" y="56" font-family="Consolas, monospace" font-size="9" fill="#dc2626" text-anchor="start" font-weight="bold">U7</text>
+<line x1="868" y1="77.5" x2="880" y2="77.5" stroke="#1e40af" stroke-width="1.2"/>
+<text x="883" y="80.5" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">SCK</text>
+<line x1="868" y1="95.0" x2="880" y2="95.0" stroke="#1e40af" stroke-width="1.2"/>
+<text x="883" y="98.0" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">MOSI</text>
+<line x1="868" y1="112.5" x2="880" y2="112.5" stroke="#1e40af" stroke-width="1.2"/>
+<text x="883" y="115.5" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">MISO</text>
+<line x1="990" y1="77.5" x2="1002" y2="77.5" stroke="#1e40af" stroke-width="1.2"/>
+<text x="987" y="80.5" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="end" font-weight="normal">ANT</text>
+<line x1="990" y1="95.0" x2="1002" y2="95.0" stroke="#1e40af" stroke-width="1.2"/>
+<text x="987" y="98.0" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="end" font-weight="normal">DIO0</text>
+<line x1="990" y1="112.5" x2="1002" y2="112.5" stroke="#1e40af" stroke-width="1.2"/>
+<text x="987" y="115.5" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="end" font-weight="normal">GND</text>
+<text x="880" y="140" font-family="Consolas, monospace" font-size="8" fill="#0369a1" text-anchor="start" font-weight="normal">915MHz LoRa</text>
+<text x="840" y="76.5" font-family="Consolas, monospace" font-size="8" fill="#7c3aed" text-anchor="start" font-weight="bold">SPI1_CLK</text>
+<text x="840" y="94.0" font-family="Consolas, monospace" font-size="8" fill="#7c3aed" text-anchor="start" font-weight="bold">SPI1_MOSI</text>
+<text x="840" y="111.5" font-family="Consolas, monospace" font-size="8" fill="#7c3aed" text-anchor="start" font-weight="bold">SPI1_MISO</text>
+<line x1="1002" y1="77.5" x2="1022" y2="77.5" stroke="#1e40af" stroke-width="1.2"/>
+<polyline points="1022,87.5 1022,62.5 1030,77.5" fill="none" stroke="#1e293b" stroke-width="1.3"/>
+<text x="1034" y="77.5" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">ANT1</text>
+<rect x="880" y="160" width="110" height="65" fill="#f8fafc" stroke="#1e293b" stroke-width="1.5" rx="0"/>
+<text x="935.0" y="196.5" font-family="Consolas, monospace" font-size="10" fill="#1e293b" text-anchor="middle" font-weight="bold">NEO-M9N</text>
+<text x="882" y="156" font-family="Consolas, monospace" font-size="9" fill="#dc2626" text-anchor="start" font-weight="bold">U8</text>
+<line x1="868" y1="176.25" x2="880" y2="176.25" stroke="#1e40af" stroke-width="1.2"/>
+<text x="883" y="179.25" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">RX</text>
+<line x1="868" y1="192.5" x2="880" y2="192.5" stroke="#1e40af" stroke-width="1.2"/>
+<text x="883" y="195.5" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">TX</text>
+<line x1="868" y1="208.75" x2="880" y2="208.75" stroke="#1e40af" stroke-width="1.2"/>
+<text x="883" y="211.75" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">PPS</text>
+<line x1="990" y1="176.25" x2="1002" y2="176.25" stroke="#1e40af" stroke-width="1.2"/>
+<text x="987" y="179.25" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="end" font-weight="normal">VCC</text>
+<line x1="990" y1="192.5" x2="1002" y2="192.5" stroke="#1e40af" stroke-width="1.2"/>
+<text x="987" y="195.5" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="end" font-weight="normal">GND</text>
+<line x1="990" y1="208.75" x2="1002" y2="208.75" stroke="#1e40af" stroke-width="1.2"/>
+<text x="987" y="211.75" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="end" font-weight="normal">ANT</text>
+<text x="880" y="235" font-family="Consolas, monospace" font-size="8" fill="#0369a1" text-anchor="start" font-weight="normal">u-blox L1/L5</text>
+<text x="840" y="175.25" font-family="Consolas, monospace" font-size="8" fill="#7c3aed" text-anchor="start" font-weight="bold">UART0_TX</text>
+<text x="840" y="191.5" font-family="Consolas, monospace" font-size="8" fill="#7c3aed" text-anchor="start" font-weight="bold">UART0_RX</text>
+<text x="840" y="207.75" font-family="Consolas, monospace" font-size="8" fill="#7c3aed" text-anchor="start" font-weight="bold">GPIO_PPS</text>
+<line x1="1002" y1="208.75" x2="1022" y2="208.75" stroke="#1e40af" stroke-width="1.2"/>
+<polyline points="1022,218.75 1022,193.75 1030,208.75" fill="none" stroke="#1e293b" stroke-width="1.3"/>
+<text x="1034" y="208.75" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">ANT2</text>
+<rect x="880" y="260" width="110" height="65" fill="#f8fafc" stroke="#1e293b" stroke-width="1.5" rx="0"/>
+<text x="935.0" y="296.5" font-family="Consolas, monospace" font-size="10" fill="#1e293b" text-anchor="middle" font-weight="bold">9603N</text>
+<text x="882" y="256" font-family="Consolas, monospace" font-size="9" fill="#dc2626" text-anchor="start" font-weight="bold">U9</text>
+<line x1="868" y1="276.25" x2="880" y2="276.25" stroke="#1e40af" stroke-width="1.2"/>
+<text x="883" y="279.25" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">RX</text>
+<line x1="868" y1="292.5" x2="880" y2="292.5" stroke="#1e40af" stroke-width="1.2"/>
+<text x="883" y="295.5" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">TX</text>
+<line x1="868" y1="308.75" x2="880" y2="308.75" stroke="#1e40af" stroke-width="1.2"/>
+<text x="883" y="311.75" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">ON/OFF</text>
+<line x1="990" y1="276.25" x2="1002" y2="276.25" stroke="#1e40af" stroke-width="1.2"/>
+<text x="987" y="279.25" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="end" font-weight="normal">VCC</text>
+<line x1="990" y1="292.5" x2="1002" y2="292.5" stroke="#1e40af" stroke-width="1.2"/>
+<text x="987" y="295.5" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="end" font-weight="normal">GND</text>
+<line x1="990" y1="308.75" x2="1002" y2="308.75" stroke="#1e40af" stroke-width="1.2"/>
+<text x="987" y="311.75" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="end" font-weight="normal">ANT</text>
+<text x="880" y="335" font-family="Consolas, monospace" font-size="8" fill="#0369a1" text-anchor="start" font-weight="normal">Iridium SBD</text>
+<text x="840" y="275.25" font-family="Consolas, monospace" font-size="8" fill="#7c3aed" text-anchor="start" font-weight="bold">UART1_TX</text>
+<text x="840" y="291.5" font-family="Consolas, monospace" font-size="8" fill="#7c3aed" text-anchor="start" font-weight="bold">UART1_RX</text>
+<text x="840" y="307.75" font-family="Consolas, monospace" font-size="8" fill="#7c3aed" text-anchor="start" font-weight="bold">GPIO_29</text>
+<line x1="1002" y1="308.75" x2="1022" y2="308.75" stroke="#1e40af" stroke-width="1.2"/>
+<polyline points="1022,318.75 1022,293.75 1030,308.75" fill="none" stroke="#1e293b" stroke-width="1.3"/>
+<text x="1034" y="308.75" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">ANT3</text>
+<line x1="1032" y1="97.5" x2="1032" y2="89.5" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="1026" y1="89.5" x2="1038" y2="89.5" stroke="#1e40af" stroke-width="1.2"/>
+<text x="1032" y="85.5" font-family="Consolas, monospace" font-size="7" fill="#dc2626" text-anchor="middle" font-weight="bold">3V3</text>
+<line x1="1007" y1="166.25" x2="1007" y2="158.25" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="1001" y1="158.25" x2="1013" y2="158.25" stroke="#1e40af" stroke-width="1.2"/>
+<text x="1007" y="154.25" font-family="Consolas, monospace" font-size="7" fill="#dc2626" text-anchor="middle" font-weight="bold">3V3</text>
+<line x1="1007" y1="266.25" x2="1007" y2="258.25" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="1001" y1="258.25" x2="1013" y2="258.25" stroke="#1e40af" stroke-width="1.2"/>
+<text x="1007" y="254.25" font-family="Consolas, monospace" font-size="7" fill="#dc2626" text-anchor="middle" font-weight="bold">5V0</text>
+<line x1="1032" y1="114.5" x2="1032" y2="122.5" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="1026" y1="122.5" x2="1038" y2="122.5" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="1028" y1="125.5" x2="1036" y2="125.5" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="1030" y1="128.5" x2="1034" y2="128.5" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="1007" y1="194.5" x2="1007" y2="202.5" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="1001" y1="202.5" x2="1013" y2="202.5" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="1003" y1="205.5" x2="1011" y2="205.5" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="1005" y1="208.5" x2="1009" y2="208.5" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="1007" y1="294.5" x2="1007" y2="302.5" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="1001" y1="302.5" x2="1013" y2="302.5" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="1003" y1="305.5" x2="1011" y2="305.5" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="1005" y1="308.5" x2="1009" y2="308.5" stroke="#1e40af" stroke-width="1.2"/>
+<rect x="40" y="450" width="130" height="100" fill="#f8fafc" stroke="#1e293b" stroke-width="1.5" rx="0"/>
+<text x="105.0" y="504.0" font-family="Consolas, monospace" font-size="10" fill="#1e293b" text-anchor="middle" font-weight="bold">ICS-40730
+MEMS x8</text>
+<text x="42" y="446" font-family="Consolas, monospace" font-size="9" fill="#dc2626" text-anchor="start" font-weight="bold">U10-U17</text>
+<line x1="28" y1="470.0" x2="40" y2="470.0" stroke="#1e40af" stroke-width="1.2"/>
+<text x="43" y="473.0" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">VDD</text>
+<line x1="28" y1="490.0" x2="40" y2="490.0" stroke="#1e40af" stroke-width="1.2"/>
+<text x="43" y="493.0" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">GND</text>
+<line x1="28" y1="510.0" x2="40" y2="510.0" stroke="#1e40af" stroke-width="1.2"/>
+<text x="43" y="513.0" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">WS</text>
+<line x1="28" y1="530.0" x2="40" y2="530.0" stroke="#1e40af" stroke-width="1.2"/>
+<text x="43" y="533.0" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">BCLK</text>
+<line x1="170" y1="470.0" x2="182" y2="470.0" stroke="#1e40af" stroke-width="1.2"/>
+<text x="167" y="473.0" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="end" font-weight="normal">DOUT</text>
+<line x1="170" y1="490.0" x2="182" y2="490.0" stroke="#1e40af" stroke-width="1.2"/>
+<text x="167" y="493.0" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="end" font-weight="normal">LRCK</text>
+<text x="40" y="560" font-family="Consolas, monospace" font-size="8" fill="#0369a1" text-anchor="start" font-weight="normal">I2S TDM 8-ch</text>
+<line x1="187" y1="470.0" x2="195" y2="470.0" stroke="#1e40af" stroke-width="1.2"/>
+<polyline points="195,470.0 198,466.0 201,474.0 204,466.0 207,474.0 210,466.0 213,474.0 215,470.0" fill="none" stroke="#1e293b" stroke-width="1.2"/>
+<line x1="215" y1="470.0" x2="223" y2="470.0" stroke="#1e40af" stroke-width="1.2"/>
+<text x="193" y="462.0" font-family="Consolas, monospace" font-size="9" fill="#dc2626" text-anchor="start" font-weight="bold">R3-R10</text>
+<text x="193" y="482.0" font-family="Consolas, monospace" font-size="8" fill="#0369a1" text-anchor="start" font-weight="normal">100R</text>
+<text x="229" y="466.0" font-family="Consolas, monospace" font-size="8" fill="#7c3aed" text-anchor="start" font-weight="bold">I2S_DOUT</text>
+<text x="187" y="487.0" font-family="Consolas, monospace" font-size="8" fill="#7c3aed" text-anchor="start" font-weight="bold">I2S_LRCK</text>
+<text x="-17" y="533.0" font-family="Consolas, monospace" font-size="8" fill="#7c3aed" text-anchor="start" font-weight="bold">I2S_BCLK</text>
+<text x="-2" y="513.0" font-family="Consolas, monospace" font-size="8" fill="#7c3aed" text-anchor="start" font-weight="bold">I2S_WS</text>
+<line x1="8" y1="458.0" x2="8" y2="450.0" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="2" y1="450.0" x2="14" y2="450.0" stroke="#1e40af" stroke-width="1.2"/>
+<text x="8" y="446.0" font-family="Consolas, monospace" font-size="7" fill="#dc2626" text-anchor="middle" font-weight="bold">1V8</text>
+<line x1="8" y1="470.0" x2="28" y2="470.0" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="8" y1="492.0" x2="8" y2="500.0" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="2" y1="500.0" x2="14" y2="500.0" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="4" y1="503.0" x2="12" y2="503.0" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="6" y1="506.0" x2="10" y2="506.0" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="8" y1="490.0" x2="28" y2="490.0" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="28" y1="560" x2="28" y2="574" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="22" y1="574" x2="34" y2="574" stroke="#1e293b" stroke-width="1.5"/>
+<line x1="22" y1="578" x2="34" y2="578" stroke="#1e293b" stroke-width="1.5"/>
+<line x1="28" y1="578" x2="28" y2="592" stroke="#1e40af" stroke-width="1.2"/>
+<text x="36" y="568" font-family="Consolas, monospace" font-size="9" fill="#dc2626" text-anchor="start" font-weight="bold">C7-C14</text>
+<text x="36" y="580" font-family="Consolas, monospace" font-size="8" fill="#0369a1" text-anchor="start" font-weight="normal">0.1uF ea</text>
+<line x1="28" y1="596" x2="28" y2="604" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="22" y1="604" x2="34" y2="604" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="24" y1="607" x2="32" y2="607" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="26" y1="610" x2="30" y2="610" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="28" y1="556" x2="28" y2="548" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="22" y1="548" x2="34" y2="548" stroke="#1e40af" stroke-width="1.2"/>
+<text x="28" y="544" font-family="Consolas, monospace" font-size="7" fill="#dc2626" text-anchor="middle" font-weight="bold">1V8</text>
+<rect x="40" y="580" width="130" height="40" fill="#f8fafc" stroke="#1e293b" stroke-width="1.5" rx="0"/>
+<text x="105" y="605" font-family="Consolas, monospace" font-size="8" fill="#1e293b" text-anchor="middle" font-weight="bold">J2-J5: Ext Mics x4</text>
+<text x="40" y="630" font-family="Consolas, monospace" font-size="8" fill="#0369a1" text-anchor="start" font-weight="normal">JST-GH 4p · Twisted pair</text>
+<line x1="105" y1="580" x2="105" y2="555" stroke="#1e40af" stroke-width="1.2"/>
+<text x="110" y="572" font-family="Consolas, monospace" font-size="7" fill="#64748b" text-anchor="start" font-weight="normal">to wingtip/boom</text>
+<rect x="40" y="660" width="130" height="90" fill="#f8fafc" stroke="#1e293b" stroke-width="1.5" rx="0"/>
+<text x="105.0" y="709.0" font-family="Consolas, monospace" font-size="10" fill="#1e293b" text-anchor="middle" font-weight="bold">FLIR Lepton
+3.5 x2</text>
+<text x="42" y="656" font-family="Consolas, monospace" font-size="9" fill="#dc2626" text-anchor="start" font-weight="bold">U18-U19</text>
+<line x1="28" y1="678.0" x2="40" y2="678.0" stroke="#1e40af" stroke-width="1.2"/>
+<text x="43" y="681.0" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">VDD</text>
+<line x1="28" y1="696.0" x2="40" y2="696.0" stroke="#1e40af" stroke-width="1.2"/>
+<text x="43" y="699.0" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">GND</text>
+<line x1="28" y1="714.0" x2="40" y2="714.0" stroke="#1e40af" stroke-width="1.2"/>
+<text x="43" y="717.0" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">CS0</text>
+<line x1="28" y1="732.0" x2="40" y2="732.0" stroke="#1e40af" stroke-width="1.2"/>
+<text x="43" y="735.0" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">CS1</text>
+<line x1="170" y1="678.0" x2="182" y2="678.0" stroke="#1e40af" stroke-width="1.2"/>
+<text x="167" y="681.0" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="end" font-weight="normal">SCK</text>
+<line x1="170" y1="696.0" x2="182" y2="696.0" stroke="#1e40af" stroke-width="1.2"/>
+<text x="167" y="699.0" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="end" font-weight="normal">MOSI</text>
+<line x1="170" y1="714.0" x2="182" y2="714.0" stroke="#1e40af" stroke-width="1.2"/>
+<text x="167" y="717.0" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="end" font-weight="normal">MISO</text>
+<text x="40" y="760" font-family="Consolas, monospace" font-size="8" fill="#0369a1" text-anchor="start" font-weight="normal">160x120 LWIR · SPI VoSPI</text>
+<text x="187" y="675.0" font-family="Consolas, monospace" font-size="8" fill="#7c3aed" text-anchor="start" font-weight="bold">SPI0_CLK</text>
+<text x="187" y="693.0" font-family="Consolas, monospace" font-size="8" fill="#7c3aed" text-anchor="start" font-weight="bold">SPI0_MOSI</text>
+<text x="187" y="711.0" font-family="Consolas, monospace" font-size="8" fill="#7c3aed" text-anchor="start" font-weight="bold">SPI0_MISO</text>
+<text x="-22" y="717.0" font-family="Consolas, monospace" font-size="8" fill="#7c3aed" text-anchor="start" font-weight="bold">SPI0_CS0</text>
+<text x="-22" y="735.0" font-family="Consolas, monospace" font-size="8" fill="#7c3aed" text-anchor="start" font-weight="bold">SPI0_CS1</text>
+<rect x="30" y="775" width="50" height="30" fill="#f8fafc" stroke="#1e293b" stroke-width="1.5" rx="0"/>
+<text x="55" y="794" font-family="Consolas, monospace" font-size="9" fill="#1e293b" text-anchor="middle" font-weight="bold">Q1</text>
+<text x="82" y="790" font-family="Consolas, monospace" font-size="8" fill="#0369a1" text-anchor="start" font-weight="normal">Si2301</text>
+<text x="30" y="815" font-family="Consolas, monospace" font-size="8" fill="#7c3aed" text-anchor="start" font-weight="bold">SWIR_EN (GPIO_31)</text>
+<line x1="55" y1="775" x2="55" y2="760" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="55" y1="760" x2="28" y2="678.0" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="55" y1="770" x2="55" y2="762" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="49" y1="762" x2="61" y2="762" stroke="#1e40af" stroke-width="1.2"/>
+<text x="55" y="758" font-family="Consolas, monospace" font-size="7" fill="#dc2626" text-anchor="middle" font-weight="bold">3V3</text>
+<rect x="300" y="450" width="120" height="80" fill="#f8fafc" stroke="#1e293b" stroke-width="1.5" rx="0"/>
+<text x="360.0" y="494.0" font-family="Consolas, monospace" font-size="10" fill="#1e293b" text-anchor="middle" font-weight="bold">IMX477</text>
+<text x="302" y="446" font-family="Consolas, monospace" font-size="9" fill="#dc2626" text-anchor="start" font-weight="bold">U20</text>
+<line x1="288" y1="470.0" x2="300" y2="470.0" stroke="#1e40af" stroke-width="1.2"/>
+<text x="303" y="473.0" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">VDD_IO</text>
+<line x1="288" y1="490.0" x2="300" y2="490.0" stroke="#1e40af" stroke-width="1.2"/>
+<text x="303" y="493.0" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">VDD_A</text>
+<line x1="288" y1="510.0" x2="300" y2="510.0" stroke="#1e40af" stroke-width="1.2"/>
+<text x="303" y="513.0" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">GND</text>
+<line x1="420" y1="470.0" x2="432" y2="470.0" stroke="#1e40af" stroke-width="1.2"/>
+<text x="417" y="473.0" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="end" font-weight="normal">D0+/D0-</text>
+<line x1="420" y1="490.0" x2="432" y2="490.0" stroke="#1e40af" stroke-width="1.2"/>
+<text x="417" y="493.0" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="end" font-weight="normal">D1+/D1-</text>
+<line x1="420" y1="510.0" x2="432" y2="510.0" stroke="#1e40af" stroke-width="1.2"/>
+<text x="417" y="513.0" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="end" font-weight="normal">CLK+/-</text>
+<text x="300" y="540" font-family="Consolas, monospace" font-size="8" fill="#0369a1" text-anchor="start" font-weight="normal">12.3MP · CSI-2 MIPI</text>
+<text x="437" y="467.0" font-family="Consolas, monospace" font-size="8" fill="#7c3aed" text-anchor="start" font-weight="bold">CSI_D0±</text>
+<text x="437" y="487.0" font-family="Consolas, monospace" font-size="8" fill="#7c3aed" text-anchor="start" font-weight="bold">CSI_D1±</text>
+<text x="437" y="507.0" font-family="Consolas, monospace" font-size="8" fill="#7c3aed" text-anchor="start" font-weight="bold">CSI_CLK±</text>
+<line x1="268" y1="458.0" x2="268" y2="450.0" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="262" y1="450.0" x2="274" y2="450.0" stroke="#1e40af" stroke-width="1.2"/>
+<text x="268" y="446.0" font-family="Consolas, monospace" font-size="7" fill="#dc2626" text-anchor="middle" font-weight="bold">1V8</text>
+<line x1="268" y1="470.0" x2="288" y2="470.0" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="253" y1="478.0" x2="253" y2="470.0" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="247" y1="470.0" x2="259" y2="470.0" stroke="#1e40af" stroke-width="1.2"/>
+<text x="253" y="466.0" font-family="Consolas, monospace" font-size="7" fill="#dc2626" text-anchor="middle" font-weight="bold">2V8</text>
+<line x1="253" y1="490.0" x2="288" y2="490.0" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="268" y1="512.0" x2="268" y2="520.0" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="262" y1="520.0" x2="274" y2="520.0" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="264" y1="523.0" x2="272" y2="523.0" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="266" y1="526.0" x2="270" y2="526.0" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="268" y1="510.0" x2="288" y2="510.0" stroke="#1e40af" stroke-width="1.2"/>
+<rect x="288" y="540" width="50" height="30" fill="#f8fafc" stroke="#1e293b" stroke-width="1.5" rx="0"/>
+<text x="313" y="559" font-family="Consolas, monospace" font-size="9" fill="#1e293b" text-anchor="middle" font-weight="bold">Q2</text>
+<text x="340" y="555" font-family="Consolas, monospace" font-size="8" fill="#0369a1" text-anchor="start" font-weight="normal">Si2301</text>
+<text x="288" y="580" font-family="Consolas, monospace" font-size="8" fill="#7c3aed" text-anchor="start" font-weight="bold">EO_EN (GPIO_29)</text>
+<rect x="300" y="610" width="120" height="50" fill="#f8fafc" stroke="#1e293b" stroke-width="1.5" rx="0"/>
+<text x="360" y="640" font-family="Consolas, monospace" font-size="10" fill="#1e293b" text-anchor="middle" font-weight="bold">Theta Z1</text>
+<text x="302" y="606" font-family="Consolas, monospace" font-size="9" fill="#dc2626" text-anchor="start" font-weight="bold">U21</text>
+<text x="300" y="670" font-family="Consolas, monospace" font-size="8" fill="#0369a1" text-anchor="start" font-weight="normal">USB 2.0 · 360deg</text>
+<text x="425" y="635" font-family="Consolas, monospace" font-size="8" fill="#7c3aed" text-anchor="start" font-weight="bold">USB2.0</text>
+<line x1="420" y1="635" x2="430" y2="635" stroke="#1e40af" stroke-width="1.2"/>
+<rect x="300" y="700" width="120" height="65" fill="#f8fafc" stroke="#1e293b" stroke-width="1.5" rx="0"/>
+<text x="360.0" y="736.5" font-family="Consolas, monospace" font-size="10" fill="#1e293b" text-anchor="middle" font-weight="bold">ICM-42688</text>
+<text x="302" y="696" font-family="Consolas, monospace" font-size="9" fill="#dc2626" text-anchor="start" font-weight="bold">U22</text>
+<line x1="288" y1="716.25" x2="300" y2="716.25" stroke="#1e40af" stroke-width="1.2"/>
+<text x="303" y="719.25" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">VDD</text>
+<line x1="288" y1="732.5" x2="300" y2="732.5" stroke="#1e40af" stroke-width="1.2"/>
+<text x="303" y="735.5" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">GND</text>
+<line x1="288" y1="748.75" x2="300" y2="748.75" stroke="#1e40af" stroke-width="1.2"/>
+<text x="303" y="751.75" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">INT</text>
+<line x1="420" y1="716.25" x2="432" y2="716.25" stroke="#1e40af" stroke-width="1.2"/>
+<text x="417" y="719.25" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="end" font-weight="normal">SCK</text>
+<line x1="420" y1="732.5" x2="432" y2="732.5" stroke="#1e40af" stroke-width="1.2"/>
+<text x="417" y="735.5" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="end" font-weight="normal">MOSI</text>
+<line x1="420" y1="748.75" x2="432" y2="748.75" stroke="#1e40af" stroke-width="1.2"/>
+<text x="417" y="751.75" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="end" font-weight="normal">MISO</text>
+<text x="300" y="775" font-family="Consolas, monospace" font-size="8" fill="#0369a1" text-anchor="start" font-weight="normal">6-DOF IMU · SPI1</text>
+<text x="437" y="713.25" font-family="Consolas, monospace" font-size="8" fill="#7c3aed" text-anchor="start" font-weight="bold">SPI1_CLK</text>
+<text x="437" y="729.5" font-family="Consolas, monospace" font-size="8" fill="#7c3aed" text-anchor="start" font-weight="bold">SPI1_MOSI</text>
+<text x="437" y="745.75" font-family="Consolas, monospace" font-size="8" fill="#7c3aed" text-anchor="start" font-weight="bold">SPI1_MISO</text>
+<text x="243" y="751.75" font-family="Consolas, monospace" font-size="8" fill="#7c3aed" text-anchor="start" font-weight="bold">GPIO_7</text>
+<line x1="268" y1="704.25" x2="268" y2="696.25" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="262" y1="696.25" x2="274" y2="696.25" stroke="#1e40af" stroke-width="1.2"/>
+<text x="268" y="692.25" font-family="Consolas, monospace" font-size="7" fill="#dc2626" text-anchor="middle" font-weight="bold">1V8</text>
+<line x1="268" y1="716.25" x2="288" y2="716.25" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="268" y1="734.5" x2="268" y2="742.5" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="262" y1="742.5" x2="274" y2="742.5" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="264" y1="745.5" x2="272" y2="745.5" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="266" y1="748.5" x2="270" y2="748.5" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="268" y1="732.5" x2="288" y2="732.5" stroke="#1e40af" stroke-width="1.2"/>
+<rect x="860" y="450" width="120" height="65" fill="#f8fafc" stroke="#1e293b" stroke-width="1.5" rx="0"/>
+<text x="920.0" y="486.5" font-family="Consolas, monospace" font-size="10" fill="#1e293b" text-anchor="middle" font-weight="bold">BMP390</text>
+<text x="862" y="446" font-family="Consolas, monospace" font-size="9" fill="#dc2626" text-anchor="start" font-weight="bold">U23</text>
+<line x1="848" y1="471.6666666666667" x2="860" y2="471.6666666666667" stroke="#1e40af" stroke-width="1.2"/>
+<text x="863" y="474.6666666666667" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">VDD</text>
+<line x1="848" y1="493.3333333333333" x2="860" y2="493.3333333333333" stroke="#1e40af" stroke-width="1.2"/>
+<text x="863" y="496.3333333333333" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">GND</text>
+<line x1="980" y1="471.6666666666667" x2="992" y2="471.6666666666667" stroke="#1e40af" stroke-width="1.2"/>
+<text x="977" y="474.6666666666667" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="end" font-weight="normal">SDA</text>
+<line x1="980" y1="493.3333333333333" x2="992" y2="493.3333333333333" stroke="#1e40af" stroke-width="1.2"/>
+<text x="977" y="496.3333333333333" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="end" font-weight="normal">SCL</text>
+<text x="860" y="525" font-family="Consolas, monospace" font-size="8" fill="#0369a1" text-anchor="start" font-weight="normal">Baro · I2C0 · 0x77</text>
+<text x="997" y="468.6666666666667" font-family="Consolas, monospace" font-size="8" fill="#7c3aed" text-anchor="start" font-weight="bold">I2C0_SDA</text>
+<text x="997" y="490.3333333333333" font-family="Consolas, monospace" font-size="8" fill="#7c3aed" text-anchor="start" font-weight="bold">I2C0_SCL</text>
+<line x1="828" y1="459.6666666666667" x2="828" y2="451.6666666666667" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="822" y1="451.6666666666667" x2="834" y2="451.6666666666667" stroke="#1e40af" stroke-width="1.2"/>
+<text x="828" y="447.6666666666667" font-family="Consolas, monospace" font-size="7" fill="#dc2626" text-anchor="middle" font-weight="bold">3V3</text>
+<line x1="828" y1="471.6666666666667" x2="848" y2="471.6666666666667" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="828" y1="495.3333333333333" x2="828" y2="503.3333333333333" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="822" y1="503.3333333333333" x2="834" y2="503.3333333333333" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="824" y1="506.3333333333333" x2="832" y2="506.3333333333333" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="826" y1="509.3333333333333" x2="830" y2="509.3333333333333" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="828" y1="493.3333333333333" x2="848" y2="493.3333333333333" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="1042" y1="451.6666666666667" x2="1042" y2="459.6666666666667" stroke="#1e40af" stroke-width="1.2"/>
+<polyline points="1042,459.6666666666667 1038,462.6666666666667 1046,465.6666666666667 1038,468.6666666666667 1046,471.6666666666667 1038,474.6666666666667 1046,477.6666666666667 1042,479.6666666666667" fill="none" stroke="#1e293b" stroke-width="1.2"/>
+<line x1="1042" y1="479.6666666666667" x2="1042" y2="487.6666666666667" stroke="#1e40af" stroke-width="1.2"/>
+<text x="1048" y="461.6666666666667" font-family="Consolas, monospace" font-size="9" fill="#dc2626" text-anchor="start" font-weight="bold">R11</text>
+<text x="1048" y="473.6666666666667" font-family="Consolas, monospace" font-size="8" fill="#0369a1" text-anchor="start" font-weight="normal">4.7k</text>
+<line x1="1062" y1="473.3333333333333" x2="1062" y2="481.3333333333333" stroke="#1e40af" stroke-width="1.2"/>
+<polyline points="1062,481.3333333333333 1058,484.3333333333333 1066,487.3333333333333 1058,490.3333333333333 1066,493.3333333333333 1058,496.3333333333333 1066,499.3333333333333 1062,501.3333333333333" fill="none" stroke="#1e293b" stroke-width="1.2"/>
+<line x1="1062" y1="501.3333333333333" x2="1062" y2="509.3333333333333" stroke="#1e40af" stroke-width="1.2"/>
+<text x="1068" y="483.3333333333333" font-family="Consolas, monospace" font-size="9" fill="#dc2626" text-anchor="start" font-weight="bold">R12</text>
+<text x="1068" y="495.3333333333333" font-family="Consolas, monospace" font-size="8" fill="#0369a1" text-anchor="start" font-weight="normal">4.7k</text>
+<line x1="1042" y1="447.6666666666667" x2="1042" y2="439.6666666666667" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="1036" y1="439.6666666666667" x2="1048" y2="439.6666666666667" stroke="#1e40af" stroke-width="1.2"/>
+<text x="1042" y="435.6666666666667" font-family="Consolas, monospace" font-size="7" fill="#dc2626" text-anchor="middle" font-weight="bold">3V3</text>
+<line x1="1062" y1="469.3333333333333" x2="1062" y2="461.3333333333333" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="1056" y1="461.3333333333333" x2="1068" y2="461.3333333333333" stroke="#1e40af" stroke-width="1.2"/>
+<text x="1062" y="457.3333333333333" font-family="Consolas, monospace" font-size="7" fill="#dc2626" text-anchor="middle" font-weight="bold">3V3</text>
+<rect x="860" y="550" width="120" height="65" fill="#f8fafc" stroke="#1e293b" stroke-width="1.5" rx="0"/>
+<text x="920.0" y="586.5" font-family="Consolas, monospace" font-size="10" fill="#1e293b" text-anchor="middle" font-weight="bold">INA219</text>
+<text x="862" y="546" font-family="Consolas, monospace" font-size="9" fill="#dc2626" text-anchor="start" font-weight="bold">U24</text>
+<line x1="848" y1="566.25" x2="860" y2="566.25" stroke="#1e40af" stroke-width="1.2"/>
+<text x="863" y="569.25" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">VIN+</text>
+<line x1="848" y1="582.5" x2="860" y2="582.5" stroke="#1e40af" stroke-width="1.2"/>
+<text x="863" y="585.5" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">VIN-</text>
+<line x1="848" y1="598.75" x2="860" y2="598.75" stroke="#1e40af" stroke-width="1.2"/>
+<text x="863" y="601.75" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">GND</text>
+<line x1="980" y1="566.25" x2="992" y2="566.25" stroke="#1e40af" stroke-width="1.2"/>
+<text x="977" y="569.25" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="end" font-weight="normal">SDA</text>
+<line x1="980" y1="582.5" x2="992" y2="582.5" stroke="#1e40af" stroke-width="1.2"/>
+<text x="977" y="585.5" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="end" font-weight="normal">SCL</text>
+<text x="860" y="625" font-family="Consolas, monospace" font-size="8" fill="#0369a1" text-anchor="start" font-weight="normal">Power Mon · I2C1 · 0x40</text>
+<text x="997" y="563.25" font-family="Consolas, monospace" font-size="8" fill="#7c3aed" text-anchor="start" font-weight="bold">I2C1_SDA</text>
+<text x="997" y="579.5" font-family="Consolas, monospace" font-size="8" fill="#7c3aed" text-anchor="start" font-weight="bold">I2C1_SCL</text>
+<line x1="798" y1="566.25" x2="806" y2="566.25" stroke="#1e40af" stroke-width="1.2"/>
+<polyline points="806,566.25 809,562.25 812,570.25 815,562.25 818,570.25 821,562.25 824,570.25 826,566.25" fill="none" stroke="#1e293b" stroke-width="1.2"/>
+<line x1="826" y1="566.25" x2="834" y2="566.25" stroke="#1e40af" stroke-width="1.2"/>
+<text x="804" y="558.25" font-family="Consolas, monospace" font-size="9" fill="#dc2626" text-anchor="start" font-weight="bold">R_SH</text>
+<text x="804" y="578.25" font-family="Consolas, monospace" font-size="8" fill="#0369a1" text-anchor="start" font-weight="normal">0.1R</text>
+<text x="783" y="561.25" font-family="Consolas, monospace" font-size="8" fill="#7c3aed" text-anchor="start" font-weight="bold">V_BAT</text>
+<line x1="828" y1="600.75" x2="828" y2="608.75" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="822" y1="608.75" x2="834" y2="608.75" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="824" y1="611.75" x2="832" y2="611.75" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="826" y1="614.75" x2="830" y2="614.75" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="828" y1="598.75" x2="848" y2="598.75" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="1042" y1="546.25" x2="1042" y2="554.25" stroke="#1e40af" stroke-width="1.2"/>
+<polyline points="1042,554.25 1038,557.25 1046,560.25 1038,563.25 1046,566.25 1038,569.25 1046,572.25 1042,574.25" fill="none" stroke="#1e293b" stroke-width="1.2"/>
+<line x1="1042" y1="574.25" x2="1042" y2="582.25" stroke="#1e40af" stroke-width="1.2"/>
+<text x="1048" y="556.25" font-family="Consolas, monospace" font-size="9" fill="#dc2626" text-anchor="start" font-weight="bold">R13</text>
+<text x="1048" y="568.25" font-family="Consolas, monospace" font-size="8" fill="#0369a1" text-anchor="start" font-weight="normal">4.7k</text>
+<line x1="1062" y1="562.5" x2="1062" y2="570.5" stroke="#1e40af" stroke-width="1.2"/>
+<polyline points="1062,570.5 1058,573.5 1066,576.5 1058,579.5 1066,582.5 1058,585.5 1066,588.5 1062,590.5" fill="none" stroke="#1e293b" stroke-width="1.2"/>
+<line x1="1062" y1="590.5" x2="1062" y2="598.5" stroke="#1e40af" stroke-width="1.2"/>
+<text x="1068" y="572.5" font-family="Consolas, monospace" font-size="9" fill="#dc2626" text-anchor="start" font-weight="bold">R14</text>
+<text x="1068" y="584.5" font-family="Consolas, monospace" font-size="8" fill="#0369a1" text-anchor="start" font-weight="normal">4.7k</text>
+<line x1="1042" y1="542.25" x2="1042" y2="534.25" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="1036" y1="534.25" x2="1048" y2="534.25" stroke="#1e40af" stroke-width="1.2"/>
+<text x="1042" y="530.25" font-family="Consolas, monospace" font-size="7" fill="#dc2626" text-anchor="middle" font-weight="bold">3V3</text>
+<line x1="1062" y1="558.5" x2="1062" y2="550.5" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="1056" y1="550.5" x2="1068" y2="550.5" stroke="#1e40af" stroke-width="1.2"/>
+<text x="1062" y="546.5" font-family="Consolas, monospace" font-size="7" fill="#dc2626" text-anchor="middle" font-weight="bold">3V3</text>
+<rect x="860" y="650" width="110" height="55" fill="#f8fafc" stroke="#1e293b" stroke-width="1.5" rx="0"/>
+<text x="915.0" y="681.5" font-family="Consolas, monospace" font-size="10" fill="#1e293b" text-anchor="middle" font-weight="bold">TPS3823</text>
+<text x="862" y="646" font-family="Consolas, monospace" font-size="9" fill="#dc2626" text-anchor="start" font-weight="bold">U25</text>
+<line x1="848" y1="668.3333333333334" x2="860" y2="668.3333333333334" stroke="#1e40af" stroke-width="1.2"/>
+<text x="863" y="671.3333333333334" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">VDD</text>
+<line x1="848" y1="686.6666666666666" x2="860" y2="686.6666666666666" stroke="#1e40af" stroke-width="1.2"/>
+<text x="863" y="689.6666666666666" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="start" font-weight="normal">WDI</text>
+<line x1="970" y1="668.3333333333334" x2="982" y2="668.3333333333334" stroke="#1e40af" stroke-width="1.2"/>
+<text x="967" y="671.3333333333334" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="end" font-weight="normal">RST</text>
+<line x1="970" y1="686.6666666666666" x2="982" y2="686.6666666666666" stroke="#1e40af" stroke-width="1.2"/>
+<text x="967" y="689.6666666666666" font-family="Consolas, monospace" font-size="8" fill="#64748b" text-anchor="end" font-weight="normal">GND</text>
+<text x="860" y="715" font-family="Consolas, monospace" font-size="8" fill="#0369a1" text-anchor="start" font-weight="normal">Watchdog 1.6s</text>
+<text x="798" y="689.6666666666666" font-family="Consolas, monospace" font-size="8" fill="#7c3aed" text-anchor="start" font-weight="bold">GPIO_7 (WDI)</text>
+<text x="987" y="665.3333333333334" font-family="Consolas, monospace" font-size="8" fill="#7c3aed" text-anchor="start" font-weight="bold">SYS_RST#</text>
+<line x1="828" y1="656.3333333333334" x2="828" y2="648.3333333333334" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="822" y1="648.3333333333334" x2="834" y2="648.3333333333334" stroke="#1e40af" stroke-width="1.2"/>
+<text x="828" y="644.3333333333334" font-family="Consolas, monospace" font-size="7" fill="#dc2626" text-anchor="middle" font-weight="bold">3V3</text>
+<line x1="828" y1="668.3333333333334" x2="848" y2="668.3333333333334" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="997" y1="688.6666666666666" x2="997" y2="696.6666666666666" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="991" y1="696.6666666666666" x2="1003" y2="696.6666666666666" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="993" y1="699.6666666666666" x2="1001" y2="699.6666666666666" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="995" y1="702.6666666666666" x2="999" y2="702.6666666666666" stroke="#1e40af" stroke-width="1.2"/>
+<line x1="982" y1="686.6666666666666" x2="997" y2="686.6666666666666" stroke="#1e40af" stroke-width="1.2"/>
+<rect x="860" y="730" width="200" height="50" fill="#f8fafc" stroke="#1e293b" stroke-width="1.5" rx="0"/>
+<text x="960" y="755" font-family="Consolas, monospace" font-size="9" fill="#1e293b" text-anchor="middle" font-weight="bold">ESD / TVS Protection</text>
+<text x="862" y="726" font-family="Consolas, monospace" font-size="9" fill="#dc2626" text-anchor="start" font-weight="bold">D3-D8</text>
+<text x="860" y="790" font-family="Consolas, monospace" font-size="8" fill="#0369a1" text-anchor="start" font-weight="normal">PRTR5V0U2X (USB/UART)</text>
+<text x="860" y="802" font-family="Consolas, monospace" font-size="8" fill="#0369a1" text-anchor="start" font-weight="normal">SM712 (I2C)</text>
+<rect x="860" y="820" width="200" height="45" fill="#f8fafc" stroke="#1e293b" stroke-width="1.5" rx="0"/>
+<text x="960" y="847" font-family="Consolas, monospace" font-size="9" fill="#1e293b" text-anchor="middle" font-weight="bold">Status LEDs</text>
+<text x="862" y="816" font-family="Consolas, monospace" font-size="9" fill="#dc2626" text-anchor="start" font-weight="bold">D9-D11</text>
+<text x="862" y="872" font-family="Consolas, monospace" font-size="8" fill="#0369a1" text-anchor="start" font-weight="normal">GRN=PwrOK  AMB=HB  RED=Alert</text>
+<rect x="530" y="450" width="250" height="50" fill="#fefce8" stroke="#b45309" stroke-width="1" rx="4"/>
+<text x="540" y="468" font-family="Consolas, monospace" font-size="9" fill="#92400e" text-anchor="start" font-weight="bold">Power rails:</text>
+<text x="540" y="482" font-family="Consolas, monospace" font-size="8" fill="#78350f" text-anchor="start" font-weight="normal">V_BAT=14.8V   5V0=5.0V   3V3=3.3V   2V8=2.8V   1V8=1.8V</text>
+<rect x="530" y="510" width="250" height="85" fill="#f0fdf4" stroke="#15803d" stroke-width="1" rx="4"/>
+<text x="540" y="528" font-family="Consolas, monospace" font-size="9" fill="#166534" text-anchor="start" font-weight="bold">Bus summary:</text>
+<text x="540" y="542" font-family="Consolas, monospace" font-size="8" fill="#14532d" text-anchor="start" font-weight="normal">SPI0: SWIR Lepton x2 (CS0/CS1)</text>
+<text x="540" y="554" font-family="Consolas, monospace" font-size="8" fill="#14532d" text-anchor="start" font-weight="normal">SPI1: LoRa + IMU</text>
+<text x="540" y="566" font-family="Consolas, monospace" font-size="8" fill="#14532d" text-anchor="start" font-weight="normal">I2S TDM: MEMS x8 + 4 ext</text>
+<text x="540" y="578" font-family="Consolas, monospace" font-size="8" fill="#14532d" text-anchor="start" font-weight="normal">I2C0: BMP390   I2C1: INA219</text>
+<text x="540" y="590" font-family="Consolas, monospace" font-size="8" fill="#14532d" text-anchor="start" font-weight="normal">UART0: GPS   UART1: Iridium</text>
+<rect x="530" y="605" width="250" height="50" fill="#f1f5f9" stroke="#64748b" stroke-width="1" rx="4"/>
+<text x="540" y="623" font-family="Consolas, monospace" font-size="9" fill="#334155" text-anchor="start" font-weight="bold">Component count:</text>
+<text x="540" y="638" font-family="Consolas, monospace" font-size="8" fill="#475569" text-anchor="start" font-weight="normal">25 ICs · 14 passives · 11 connectors · 3 MOSFETs · 3 LEDs</text>
+<text x="540" y="650" font-family="Consolas, monospace" font-size="8" fill="#475569" text-anchor="start" font-weight="normal">4-layer PCB · 100x65mm · ENIG · Parylene C coat</text>
+</svg>
