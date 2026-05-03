@@ -306,25 +306,80 @@ omni_range = 18.0
 script = ExtResource("8_view")
 hcm_path = NodePath("../HCM")
 argus_path = NodePath("../Argus")
-eo_camera_path = NodePath("EOViewport/EOCamera")
-ir_camera_path = NodePath("IRViewport/IRCamera")
 
-[node name="EOViewport" type="SubViewport" parent="GimbalView"]
-size = Vector2i(320, 200)
+; --- EO ring ---
+[node name="EOViewport_F" type="SubViewport" parent="GimbalView"]
+size = Vector2i(160, 110)
 render_target_update_mode = 4
-
-[node name="EOCamera" type="Camera3D" parent="GimbalView/EOViewport"]
-fov = 18.0
+[node name="EOCamera_F" type="Camera3D" parent="GimbalView/EOViewport_F"]
+fov = 100.0
 near = 0.05
 far = 4000.0
 cull_mask = 1
 
-[node name="IRViewport" type="SubViewport" parent="GimbalView"]
-size = Vector2i(320, 200)
+[node name="EOViewport_R" type="SubViewport" parent="GimbalView"]
+size = Vector2i(160, 110)
 render_target_update_mode = 4
+[node name="EOCamera_R" type="Camera3D" parent="GimbalView/EOViewport_R"]
+fov = 100.0
+near = 0.05
+far = 4000.0
+cull_mask = 1
 
-[node name="IRCamera" type="Camera3D" parent="GimbalView/IRViewport"]
-fov = 18.0
+[node name="EOViewport_B" type="SubViewport" parent="GimbalView"]
+size = Vector2i(160, 110)
+render_target_update_mode = 4
+[node name="EOCamera_B" type="Camera3D" parent="GimbalView/EOViewport_B"]
+fov = 100.0
+near = 0.05
+far = 4000.0
+cull_mask = 1
+
+[node name="EOViewport_L" type="SubViewport" parent="GimbalView"]
+size = Vector2i(160, 110)
+render_target_update_mode = 4
+[node name="EOCamera_L" type="Camera3D" parent="GimbalView/EOViewport_L"]
+fov = 100.0
+near = 0.05
+far = 4000.0
+cull_mask = 1
+
+; --- IR ring ---
+[node name="IRViewport_F" type="SubViewport" parent="GimbalView"]
+size = Vector2i(160, 110)
+render_target_update_mode = 4
+[node name="IRCamera_F" type="Camera3D" parent="GimbalView/IRViewport_F"]
+fov = 100.0
+near = 0.05
+far = 4000.0
+environment = SubResource("env_ir")
+cull_mask = 1
+
+[node name="IRViewport_R" type="SubViewport" parent="GimbalView"]
+size = Vector2i(160, 110)
+render_target_update_mode = 4
+[node name="IRCamera_R" type="Camera3D" parent="GimbalView/IRViewport_R"]
+fov = 100.0
+near = 0.05
+far = 4000.0
+environment = SubResource("env_ir")
+cull_mask = 1
+
+[node name="IRViewport_B" type="SubViewport" parent="GimbalView"]
+size = Vector2i(160, 110)
+render_target_update_mode = 4
+[node name="IRCamera_B" type="Camera3D" parent="GimbalView/IRViewport_B"]
+fov = 100.0
+near = 0.05
+far = 4000.0
+environment = SubResource("env_ir")
+cull_mask = 1
+
+[node name="IRViewport_L" type="SubViewport" parent="GimbalView"]
+size = Vector2i(160, 110)
+render_target_update_mode = 4
+[node name="IRCamera_L" type="Camera3D" parent="GimbalView/IRViewport_L"]
+fov = 100.0
 near = 0.05
 far = 4000.0
 environment = SubResource("env_ir")
@@ -362,8 +417,8 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("6_hud")
-eo_viewport_path = NodePath("../GimbalView/EOViewport")
-ir_viewport_path = NodePath("../GimbalView/IRViewport")
+eo_viewport_path = NodePath("../GimbalView/EOViewport_F")
+ir_viewport_path = NodePath("../GimbalView/IRViewport_F")
 
 [node name="Controller" type="Node3D" parent="."]
 script = ExtResource("2_ctrl")
