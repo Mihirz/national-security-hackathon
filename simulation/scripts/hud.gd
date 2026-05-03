@@ -263,10 +263,10 @@ func _draw_compass(rect: Rect2) -> void:
 		draw_arc(center + rel_est, 6.0, 0.0, TAU, 16, COL_OK, 1.5)
 
 	# Transformer-predicted trajectory (if MLBridge is up).
-	if sim.ml_bridge and sim.ml_bridge.last_trajectory.size() >= 2:
+	if sim.ml_bridge and sim.ml_bridge.last_trajectory_pos.size() >= 2:
 		var prev: Vector2 = center
-		for i in sim.ml_bridge.last_trajectory.size():
-			var p: Vector3 = sim.ml_bridge.last_trajectory[i]
+		for i in sim.ml_bridge.last_trajectory_pos.size():
+			var p: Vector3 = sim.ml_bridge.last_trajectory_pos[i]
 			var rel := Vector2(p.x, p.z) / scale_m_per_px
 			if rel.length() > r:
 				rel = rel.normalized() * r
