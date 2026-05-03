@@ -143,19 +143,33 @@ func _step_prediction(_dt: float) -> void:
 	var sigma_scale: float = lerp(0.08, 14.0, noise_curve) * (1.0 + 0.7 * range_factor)
 	var conf_curve: float = pow(det_quality, 0.55)
 	predicted_confidence = lerp(0.05, 0.99, conf_curve)
-	# Hard tighten on EO visual: range multiplier doesn't apply (we can see
-	# the target directly), sigma collapses, and confidence is floored high.
+
+	# Stable IR lock: slightly tighten sigma and smooth the drift.
+	# Uses thermal_intensity as a within-lock quality signal.
+	var eff_pos_decay := pred_pos_decay
+	var eff_yaw_decay := pred_yaw_decay
+	if swir.has_lock:
+		var ir_q := swir.thermal_intensity
+		sigma_scale = lerp(sigma_scale, sigma_scale * 0.55, ir_q * 0.5)
+		predicted_confidence = maxf(predicted_confidence, lerp(0.45, 0.70, ir_q))
+		eff_pos_decay = lerp(pred_pos_decay, 0.978, ir_q * 0.5)
+		eff_yaw_decay = lerp(pred_yaw_decay, 0.982, ir_q * 0.5)
+
+	# EO visual: stronger tighten — sigma collapses, confidence floors high,
+	# drift becomes very smooth.
 	if eo.has_visual:
-		sigma_scale = lerp(sigma_scale, 0.05, 0.85)
-		predicted_confidence = maxf(predicted_confidence, lerp(0.88, 0.99, eo.classification_conf))
+		sigma_scale = lerp(sigma_scale, 0.02, 0.93)
+		predicted_confidence = maxf(predicted_confidence, lerp(0.93, 0.99, eo.classification_conf))
+		eff_pos_decay = lerp(eff_pos_decay, 0.997, eo.classification_conf * 0.9)
+		eff_yaw_decay = lerp(eff_yaw_decay, 0.998, eo.classification_conf * 0.9)
 
 	# Ornstein-Uhlenbeck noise on top of truth: smoothly drifting offset.
-	_ou_pos = _ou_pos * pred_pos_decay + Vector3(
+	_ou_pos = _ou_pos * eff_pos_decay + Vector3(
 		_pred_rng.randfn(0.0, 1.0),
 		_pred_rng.randfn(0.0, 0.35),
 		_pred_rng.randfn(0.0, 1.0)
-	) * pred_pos_sigma_m * sigma_scale * sqrt(1.0 - pred_pos_decay * pred_pos_decay)
-	_ou_yaw = _ou_yaw * pred_yaw_decay + _pred_rng.randfn(0.0, 1.0) * pred_yaw_sigma_rad * sigma_scale * sqrt(1.0 - pred_yaw_decay * pred_yaw_decay)
+	) * pred_pos_sigma_m * sigma_scale * sqrt(1.0 - eff_pos_decay * eff_pos_decay)
+	_ou_yaw = _ou_yaw * eff_yaw_decay + _pred_rng.randfn(0.0, 1.0) * pred_yaw_sigma_rad * sigma_scale * sqrt(1.0 - eff_yaw_decay * eff_yaw_decay)
 
 	predicted_pos_world = hcm.truth_position_m + _ou_pos
 	# Apply a small yaw rotation to the truth velocity to wobble heading.
