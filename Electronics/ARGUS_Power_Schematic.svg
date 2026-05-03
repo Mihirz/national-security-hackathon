@@ -208,7 +208,7 @@
   <text x="110" y="788" text-anchor="middle" fill="#fcd34d" font-size="10">22 ICs</text>
   <text x="250" y="788" text-anchor="middle" fill="#fcd34d" font-size="10">36 line items</text>
   <text x="410" y="788" text-anchor="middle" fill="#fcd34d" font-size="10">7 categories</text>
-  <text x="580" y="788" text-anchor="middle" fill="#22c55e" font-size="10">Unit cost: ~$4,800</text>
+  <text x="580" y="788" text-anchor="middle" fill="#22c55e" font-size="10">Unit cost: ~$7,458</text>
   <text x="750" y="788" text-anchor="middle" fill="#94a3b8" font-size="10">See: ARGUS_BOM.xlsx</text>
   <text x="940" y="788" text-anchor="middle" fill="#94a3b8" font-size="10">Weight budget: 1.2 kg (electronics)</text>
   <text x="550" y="810" text-anchor="middle" fill="#64748b" font-size="9">Ref designators: U=IC, R=Resistor, C=Capacitor, D=Diode/LED, Q=MOSFET, J=Connector, F=Fuse, L=Inductor, BT=Battery</text>
