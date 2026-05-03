@@ -23,8 +23,71 @@ const COL_OK       := Color(0.4, 1.0, 0.55)
 var sim: SimController
 var _t: float = 0.0
 
+@export var eo_viewport_path: NodePath
+@export var ir_viewport_path: NodePath
+
+var eo_rect: TextureRect
+var ir_rect: TextureRect
+var eo_label: Label
+var ir_label: Label
+
 func bind(controller: SimController) -> void:
 	sim = controller
+
+func _ready() -> void:
+	# Bottom-right stacked sensor feed widgets: IR (top), EO (bottom).
+	var feed_w := 320
+	var feed_h := 200
+	var margin := 16
+	var hotkeys_h := 92
+	var stack_bottom := -hotkeys_h - margin - margin
+	# EO feed (just above the hotkeys panel)
+	eo_rect = TextureRect.new()
+	eo_rect.name = "EOFeed"
+	eo_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	eo_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	eo_rect.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_RIGHT)
+	eo_rect.offset_left = -feed_w - margin
+	eo_rect.offset_top = stack_bottom - feed_h
+	eo_rect.offset_right = -margin
+	eo_rect.offset_bottom = stack_bottom
+	add_child(eo_rect)
+	eo_label = _make_label("EO  CAMERA", eo_rect)
+	# IR feed above EO
+	ir_rect = TextureRect.new()
+	ir_rect.name = "IRFeed"
+	ir_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	ir_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	ir_rect.modulate = Color(1.0, 0.55, 0.25, 1.0)  # false-color tint
+	ir_rect.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_RIGHT)
+	ir_rect.offset_left = -feed_w - margin
+	ir_rect.offset_top = stack_bottom - feed_h * 2 - margin
+	ir_rect.offset_right = -margin
+	ir_rect.offset_bottom = stack_bottom - feed_h - margin
+	add_child(ir_rect)
+	ir_label = _make_label("SWIR  IR", ir_rect)
+
+	# Bind viewports as textures (deferred so the SubViewport has rendered once).
+	call_deferred("_bind_feeds")
+
+func _bind_feeds() -> void:
+	if eo_viewport_path != NodePath(""):
+		var eo_vp := get_node_or_null(eo_viewport_path) as SubViewport
+		if eo_vp and eo_rect:
+			eo_rect.texture = eo_vp.get_texture()
+	if ir_viewport_path != NodePath(""):
+		var ir_vp := get_node_or_null(ir_viewport_path) as SubViewport
+		if ir_vp and ir_rect:
+			ir_rect.texture = ir_vp.get_texture()
+
+func _make_label(text: String, parent: Control) -> Label:
+	var l := Label.new()
+	l.text = text
+	l.add_theme_color_override("font_color", COL_ACCENT)
+	l.add_theme_font_size_override("font_size", 11)
+	l.position = Vector2(6, 4)
+	parent.add_child(l)
+	return l
 
 func _process(delta: float) -> void:
 	_t += delta
@@ -164,7 +227,24 @@ func _draw_compass(sz: Vector2) -> void:
 			rel_est = rel_est.normalized() * r
 		draw_arc(center + rel_est, 6, 0, TAU, 16, COL_OK, 1.5)
 
+	# Transformer-predicted trajectory (if MLBridge is up).
+	if sim.ml_bridge and sim.ml_bridge.last_trajectory.size() >= 2:
+		var prev: Vector2 = center
+		for i in sim.ml_bridge.last_trajectory.size():
+			var p: Vector3 = sim.ml_bridge.last_trajectory[i]
+			var rel := Vector2(p.x, p.z) / scale_m_per_px
+			if rel.length() > r:
+				rel = rel.normalized() * r
+			var pt := center + rel
+			if i > 0:
+				draw_line(prev, pt, Color(0.2, 0.9, 1.0, 0.9), 1.5)
+			draw_circle(pt, 2.0, Color(0.2, 0.9, 1.0, 1.0))
+			prev = pt
+
 	_label(center + Vector2(-r - 4, -r - 14), "TACMAP  250 km", COL_DIM, 10)
+	if sim.ml_bridge:
+		var tag := "AI  p=%.2f  R=%.0fm" % [sim.ml_bridge.last_p_target, sim.ml_bridge.last_range_m]
+		_label(center + Vector2(-r - 4, r + 16), tag, Color(0.2, 0.9, 1.0, 1.0), 10)
 
 # ---------------------------------------------------------------------------
 # Drawing helpers.

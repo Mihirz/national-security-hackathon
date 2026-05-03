@@ -23,12 +23,18 @@ var swir: SensorSWIR
 var eo: SensorEO
 var fusion: SensorFusion
 var power: PowerManager
+const MLBridgeScript = preload("res://scripts/ml_bridge.gd")
+var ml_bridge: Node
+
+@export var enable_ml_bridge: bool = false
+@export var ml_query_period_s: float = 0.2
+var _ml_query_accum: float = 0.0
 
 var truth_marker: Node3D
 var estimate_marker: Node3D
 var bearing_lines: Node3D
 
-var _show_truth: bool = true
+var _show_truth: bool = false
 var _camera_mode: int = 0   # 0 = orbit, 1 = chase ARGUS, 2 = chase HCM
 
 var sim_time_s: float = 0.0
@@ -53,6 +59,10 @@ func _ready() -> void:
 	add_child(power)
 	power.bind(infrasound, swir, eo)
 
+	if enable_ml_bridge:
+		ml_bridge = MLBridgeScript.new()
+		add_child(ml_bridge)
+
 	if hud and hud.has_method("bind"):
 		hud.call("bind", self)
 
@@ -73,6 +83,12 @@ func _physics_process(delta: float) -> void:
 
 	# Power tier update (hysteresis-aware).
 	power.update(fusion.confidence, delta)
+
+	if ml_bridge:
+		_ml_query_accum += delta
+		if _ml_query_accum >= ml_query_period_s:
+			_ml_query_accum = 0.0
+			ml_bridge.query(infrasound, swir, eo)
 
 	_update_markers()
 	_handle_input()
