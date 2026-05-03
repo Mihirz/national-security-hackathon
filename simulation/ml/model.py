@@ -12,7 +12,7 @@ Architecture:
          trajectory      (H=10, 3)  future Δposition relative to ARGUS,
                                     spaced TRAJ_DT seconds apart
 
-~70k parameters; runs at sub-millisecond per inference on M1 CPU.
+~258k parameters; runs at sub-millisecond per inference on M1 CPU.
 """
 from __future__ import annotations
 
