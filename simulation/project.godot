@@ -10,15 +10,37 @@ config_version=5
 
 [application]
 
-config/name="UAV Hypersonic Detection Simulation"
-run/main_scene="uid://ckavqb25bdaul"
+config/name="Project ARGUS"
+config/description="Stratospheric solar-glider intercept simulation. Multi-modal sensor fusion (SWIR IR, EO camera, infrasound/pressure) versus a hypersonic cruise missile with evasion heuristics."
+run/main_scene="res://scenes/main.tscn"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 
-[physics]
+[display]
 
-3d/physics_engine="Jolt Physics"
+window/size/viewport_width=1600
+window/size/viewport_height=900
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+
+[input]
+
+reset_sim={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":82,"physical_keycode":0,"key_label":0,"unicode":114,"location":0,"echo":false,"script":null)
+]
+}
+toggle_truth={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":84,"physical_keycode":0,"key_label":0,"unicode":116,"location":0,"echo":false,"script":null)
+]
+}
+camera_cycle={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":67,"physical_keycode":0,"key_label":0,"unicode":99,"location":0,"echo":false,"script":null)
+]
+}
 
 [rendering]
 
-rendering_device/driver.windows="d3d12"
+environment/defaults/default_clear_color=Color(0.02, 0.04, 0.08, 1)

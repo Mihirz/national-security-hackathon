@@ -1,22 +1,431 @@
-[gd_scene format=3 uid="uid://ckavqb25bdaul"]
+[gd_scene load_steps=44 format=3 uid="uid://c1n6kovp848dv"]
 
-[ext_resource type="Script" uid="uid://b2fpql3h8o53t" path="res://scripts/main.gd" id="1_mainscript"]
-[ext_resource type="Shader" uid="uid://bkwhcrvk2u3ku" path="res://scripts/sky.gdshader" id="1_o5qli"]
+[ext_resource type="Script" path="res://scripts/sim_constants.gd" id="1_const"]
+[ext_resource type="Script" path="res://scripts/sim_controller.gd" id="2_ctrl"]
+[ext_resource type="Script" path="res://scripts/argus_drone.gd" id="3_argus"]
+[ext_resource type="Script" path="res://scripts/hcm_target.gd" id="4_hcm"]
+[ext_resource type="Script" path="res://scripts/orbit_camera.gd" id="5_cam"]
+[ext_resource type="Script" path="res://scripts/hud.gd" id="6_hud"]
+[ext_resource type="Shader" uid="uid://bkwhcrvk2u3ku" path="res://scripts/sky.gdshader" id="7_sky"]
+[ext_resource type="Script" path="res://scripts/eo_ir_view.gd" id="8_view"]
+[ext_resource type="Shader" uid="uid://dotvb8r47ukm6" path="res://scripts/fire_cone.gdshader" id="9_cone"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_0wfyh"]
-shader = ExtResource("1_o5qli")
+[sub_resource type="ShaderMaterial" id="sky_mat"]
+shader = ExtResource("7_sky")
 
-[sub_resource type="Sky" id="Sky_sugp2"]
-sky_material = SubResource("ShaderMaterial_0wfyh")
+[sub_resource type="Sky" id="sky_res"]
+sky_material = SubResource("sky_mat")
 
-[sub_resource type="Environment" id="Environment_0wfyh"]
+[sub_resource type="Environment" id="env"]
 background_mode = 2
-sky = SubResource("Sky_sugp2")
+sky = SubResource("sky_res")
+ambient_light_source = 3
+ambient_light_color = Color(0.4, 0.55, 0.8, 1)
+ambient_light_energy = 0.4
+tonemap_mode = 2
+glow_enabled = true
+glow_intensity = 0.6
 
-[node name="Node3D" type="Node3D" unique_id=2108259764]
-script = ExtResource("1_mainscript")
+; ----- IR camera environment: black background, only emission shows -----
+[sub_resource type="Environment" id="env_ir"]
+background_mode = 0
+background_color = Color(0.01, 0.0, 0.02, 1)
+ambient_light_source = 1
+ambient_light_color = Color(0.0, 0.0, 0.0, 1)
+ambient_light_energy = 0.0
+tonemap_mode = 2
+tonemap_exposure = 0.6
+glow_enabled = true
+glow_intensity = 1.4
+glow_bloom = 0.6
+adjustment_enabled = true
+adjustment_brightness = 1.1
+adjustment_saturation = 0.0
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=928909968]
-environment = SubResource("Environment_0wfyh")
+; ----- EO viewport panel material (use a plain ImageTexture-less stub via TextureRect) -----
 
-[node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=56351955]
+; ----- ARGUS glider materials -----
+[sub_resource type="StandardMaterial3D" id="mat_argus_body"]
+albedo_color = Color(0.92, 0.94, 0.97, 1)
+metallic = 0.05
+roughness = 0.35
+
+[sub_resource type="StandardMaterial3D" id="mat_argus_wing"]
+albedo_color = Color(0.08, 0.12, 0.2, 1)
+metallic = 0.2
+roughness = 0.55
+
+[sub_resource type="StandardMaterial3D" id="mat_argus_solar"]
+albedo_color = Color(0.04, 0.07, 0.18, 1)
+metallic = 0.6
+roughness = 0.25
+emission_enabled = true
+emission = Color(0.1, 0.2, 0.45, 1)
+emission_energy_multiplier = 0.15
+
+; ARGUS fuselage: long, slim, tapered. Use a low-radius cylinder rotated to align with +Z.
+[sub_resource type="CylinderMesh" id="m_argus_fuselage"]
+top_radius = 0.18
+bottom_radius = 0.45
+height = 7.0
+radial_segments = 18
+rings = 1
+
+; Nose cone (taper to a point).
+[sub_resource type="CylinderMesh" id="m_argus_nose"]
+top_radius = 0.0
+bottom_radius = 0.18
+height = 1.6
+radial_segments = 18
+rings = 1
+
+; Main wing — extreme aspect ratio (U-2/Helios-style high-altitude glider).
+[sub_resource type="BoxMesh" id="m_argus_wing_main"]
+size = Vector3(36, 0.12, 1.6)
+
+; Solar panel strip laid on top of the wing.
+[sub_resource type="BoxMesh" id="m_argus_wing_solar"]
+size = Vector3(34, 0.02, 1.2)
+
+; Horizontal stabilizer.
+[sub_resource type="BoxMesh" id="m_argus_hstab"]
+size = Vector3(6.0, 0.08, 0.9)
+
+; Vertical fin (T-tail).
+[sub_resource type="BoxMesh" id="m_argus_vfin"]
+size = Vector3(0.1, 1.4, 0.9)
+
+; ----- HCM (missile) materials -----
+[sub_resource type="StandardMaterial3D" id="mat_hcm_body"]
+albedo_color = Color(0.45, 0.46, 0.5, 1)
+metallic = 0.85
+roughness = 0.25
+
+[sub_resource type="StandardMaterial3D" id="mat_hcm_nose"]
+albedo_color = Color(0.18, 0.18, 0.2, 1)
+metallic = 0.7
+roughness = 0.2
+emission_enabled = true
+emission = Color(1.0, 0.35, 0.15, 1)
+emission_energy_multiplier = 0.6
+
+[sub_resource type="StandardMaterial3D" id="mat_hcm_fin"]
+albedo_color = Color(0.25, 0.27, 0.3, 1)
+metallic = 0.6
+roughness = 0.3
+
+[sub_resource type="StandardMaterial3D" id="mat_hcm_exhaust"]
+albedo_color = Color(1.0, 0.6, 0.25, 1)
+emission_enabled = true
+emission = Color(1.0, 0.55, 0.2, 1)
+emission_energy_multiplier = 4.0
+
+; Cylindrical body.
+[sub_resource type="CylinderMesh" id="m_hcm_body"]
+top_radius = 0.55
+bottom_radius = 0.55
+height = 7.5
+radial_segments = 24
+rings = 1
+
+; Nose cone.
+[sub_resource type="CylinderMesh" id="m_hcm_nose"]
+top_radius = 0.0
+bottom_radius = 0.55
+height = 2.4
+radial_segments = 24
+rings = 1
+
+; Tail fin (4x rotated around axis).
+[sub_resource type="BoxMesh" id="m_hcm_fin"]
+size = Vector3(0.06, 1.4, 1.6)
+
+; Exhaust plume bulb.
+[sub_resource type="SphereMesh" id="m_hcm_exhaust"]
+radius = 0.45
+height = 1.6
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_85g3d"]
+noise_type = 0
+frequency = 0.0191
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_choun"]
+noise = SubResource("FastNoiseLite_85g3d")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_choun"]
+render_priority = 0
+shader = ExtResource("9_cone")
+shader_parameter/model_height = 20.0
+shader_parameter/dissolve_start = 0.001
+shader_parameter/dissolve_length = 0.68800003268
+shader_parameter/gradient_bias = 1.0
+shader_parameter/noise_speed = 1.0
+shader_parameter/noise_strength = 0.1
+shader_parameter/stretch_factor = 0.6
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_choun")
+shader_parameter/_color = Vector3(4, 1, 0.5)
+shader_parameter/power_factor = 1.0
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_ya4ey"]
+material = SubResource("ShaderMaterial_choun")
+top_radius = 0.015
+bottom_radius = 0.7
+height = 20.0
+
+; ----- markers -----
+[sub_resource type="SphereMesh" id="m_truth"]
+radius = 8.0
+height = 16.0
+
+[sub_resource type="StandardMaterial3D" id="mat_truth"]
+transparency = 1
+albedo_color = Color(1, 0.4, 0.4, 0.55)
+emission_enabled = true
+emission = Color(1, 0.3, 0.3, 1)
+emission_energy_multiplier = 1.2
+
+[sub_resource type="SphereMesh" id="m_estimate"]
+radius = 9.0
+height = 18.0
+
+[sub_resource type="StandardMaterial3D" id="mat_estimate"]
+transparency = 1
+albedo_color = Color(0.2, 1, 0.7, 0.45)
+emission_enabled = true
+emission = Color(0.2, 1, 0.7, 1)
+emission_energy_multiplier = 1.4
+
+[node name="Main" type="Node3D"]
+
+[node name="Constants" type="Node" parent="."]
+script = ExtResource("1_const")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("env")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866, -0.25, 0.433, 0, 0.866, 0.5, -0.5, -0.433, 0.75, 0, 200, 0)
+light_energy = 1.2
+shadow_enabled = true
+
+; ============================================================
+; ARGUS solar glider — slim fuselage, very-high-aspect wings,
+; T-tail, solar panels on top of wing. Local +Z = forward.
+; ============================================================
+[node name="Argus" type="Node3D" parent="."]
+script = ExtResource("3_argus")
+
+[node name="Fuselage" type="MeshInstance3D" parent="Argus"]
+; Cylinder default axis is Y; rotate -90deg about X so length lies along Z.
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0, 0)
+mesh = SubResource("m_argus_fuselage")
+surface_material_override/0 = SubResource("mat_argus_body")
+
+[node name="Nose" type="MeshInstance3D" parent="Argus"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, -4.3)
+mesh = SubResource("m_argus_nose")
+surface_material_override/0 = SubResource("mat_argus_body")
+
+[node name="Wing" type="MeshInstance3D" parent="Argus"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35, 0.2)
+mesh = SubResource("m_argus_wing_main")
+surface_material_override/0 = SubResource("mat_argus_wing")
+
+[node name="WingSolar" type="MeshInstance3D" parent="Argus"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.42, 0.2)
+mesh = SubResource("m_argus_wing_solar")
+surface_material_override/0 = SubResource("mat_argus_solar")
+
+[node name="HStab" type="MeshInstance3D" parent="Argus"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 3.2)
+mesh = SubResource("m_argus_hstab")
+surface_material_override/0 = SubResource("mat_argus_wing")
+
+[node name="VFin" type="MeshInstance3D" parent="Argus"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 3.2)
+mesh = SubResource("m_argus_vfin")
+surface_material_override/0 = SubResource("mat_argus_wing")
+
+; ============================================================
+; HCM hypersonic cruise missile — cylindrical body, nose cone,
+; 4 cruciform fins, glowing exhaust.
+; ============================================================
+[node name="HCM" type="Node3D" parent="."]
+script = ExtResource("4_hcm")
+
+[node name="Body" type="MeshInstance3D" parent="HCM"]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0, 0)
+mesh = SubResource("m_hcm_body")
+surface_material_override/0 = SubResource("mat_hcm_body")
+
+[node name="Nose" type="MeshInstance3D" parent="HCM"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, -4.95)
+mesh = SubResource("m_hcm_nose")
+surface_material_override/0 = SubResource("mat_hcm_nose")
+
+[node name="FinTop" type="MeshInstance3D" parent="HCM"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, -3.2)
+mesh = SubResource("m_hcm_fin")
+surface_material_override/0 = SubResource("mat_hcm_fin")
+
+[node name="FinBot" type="MeshInstance3D" parent="HCM"]
+transform = Transform3D(1, 0, 0, 0, -1, 0, 0, 0, 1, 0, -0.7, -3.2)
+mesh = SubResource("m_hcm_fin")
+surface_material_override/0 = SubResource("mat_hcm_fin")
+
+[node name="FinLeft" type="MeshInstance3D" parent="HCM"]
+transform = Transform3D(0, -1, 0, 1, 0, 0, 0, 0, 1, -0.7, 0, 3.2)
+mesh = SubResource("m_hcm_fin")
+surface_material_override/0 = SubResource("mat_hcm_fin")
+
+[node name="FinRight" type="MeshInstance3D" parent="HCM"]
+transform = Transform3D(0, 1, 0, -1, 0, 0, 0, 0, 1, 0.7, 0, 3.2)
+mesh = SubResource("m_hcm_fin")
+surface_material_override/0 = SubResource("mat_hcm_fin")
+
+[node name="Exhaust" type="MeshInstance3D" parent="HCM"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1.6, 0, 0, 4.1)
+mesh = SubResource("m_hcm_exhaust")
+surface_material_override/0 = SubResource("mat_hcm_exhaust")
+
+[node name="cone" type="MeshInstance3D" parent="HCM" unique_id=1095200693]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 14.1)
+mesh = SubResource("CylinderMesh_ya4ey")
+
+[node name="ExhaustLight" type="OmniLight3D" parent="HCM"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4.6)
+light_color = Color(1.0, 0.55, 0.2, 1)
+light_energy = 4.0
+omni_range = 18.0
+
+; ============================================================
+; Glider-mounted EO + IR sensor cameras. Each renders into a
+; SubViewport so the HUD can show their feeds bottom-right.
+; ============================================================
+[node name="GimbalView" type="Node3D" parent="."]
+script = ExtResource("8_view")
+hcm_path = NodePath("../HCM")
+argus_path = NodePath("../Argus")
+
+; --- EO ring ---
+[node name="EOViewport_F" type="SubViewport" parent="GimbalView"]
+size = Vector2i(160, 110)
+render_target_update_mode = 4
+[node name="EOCamera_F" type="Camera3D" parent="GimbalView/EOViewport_F"]
+fov = 22.0
+near = 0.05
+far = 4000.0
+cull_mask = 1
+
+[node name="EOViewport_R" type="SubViewport" parent="GimbalView"]
+size = Vector2i(160, 110)
+render_target_update_mode = 4
+[node name="EOCamera_R" type="Camera3D" parent="GimbalView/EOViewport_R"]
+fov = 22.0
+near = 0.05
+far = 4000.0
+cull_mask = 1
+
+[node name="EOViewport_B" type="SubViewport" parent="GimbalView"]
+size = Vector2i(160, 110)
+render_target_update_mode = 4
+[node name="EOCamera_B" type="Camera3D" parent="GimbalView/EOViewport_B"]
+fov = 22.0
+near = 0.05
+far = 4000.0
+cull_mask = 1
+
+[node name="EOViewport_L" type="SubViewport" parent="GimbalView"]
+size = Vector2i(160, 110)
+render_target_update_mode = 4
+[node name="EOCamera_L" type="Camera3D" parent="GimbalView/EOViewport_L"]
+fov = 22.0
+near = 0.05
+far = 4000.0
+cull_mask = 1
+
+; --- IR ring ---
+[node name="IRViewport_F" type="SubViewport" parent="GimbalView"]
+size = Vector2i(160, 110)
+render_target_update_mode = 4
+[node name="IRCamera_F" type="Camera3D" parent="GimbalView/IRViewport_F"]
+fov = 22.0
+near = 0.05
+far = 4000.0
+environment = SubResource("env_ir")
+cull_mask = 1
+
+[node name="IRViewport_R" type="SubViewport" parent="GimbalView"]
+size = Vector2i(160, 110)
+render_target_update_mode = 4
+[node name="IRCamera_R" type="Camera3D" parent="GimbalView/IRViewport_R"]
+fov = 22.0
+near = 0.05
+far = 4000.0
+environment = SubResource("env_ir")
+cull_mask = 1
+
+[node name="IRViewport_B" type="SubViewport" parent="GimbalView"]
+size = Vector2i(160, 110)
+render_target_update_mode = 4
+[node name="IRCamera_B" type="Camera3D" parent="GimbalView/IRViewport_B"]
+fov = 22.0
+near = 0.05
+far = 4000.0
+environment = SubResource("env_ir")
+cull_mask = 1
+
+[node name="IRViewport_L" type="SubViewport" parent="GimbalView"]
+size = Vector2i(160, 110)
+render_target_update_mode = 4
+[node name="IRCamera_L" type="Camera3D" parent="GimbalView/IRViewport_L"]
+fov = 22.0
+near = 0.05
+far = 4000.0
+environment = SubResource("env_ir")
+cull_mask = 1
+
+[node name="TruthMarker" type="MeshInstance3D" parent="."]
+mesh = SubResource("m_truth")
+surface_material_override/0 = SubResource("mat_truth")
+visible = false
+layers = 2
+
+[node name="EstimateMarker" type="MeshInstance3D" parent="."]
+mesh = SubResource("m_estimate")
+surface_material_override/0 = SubResource("mat_estimate")
+layers = 2
+
+[node name="BearingLines" type="Node3D" parent="."]
+
+[node name="Camera" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 220, 110, 220)
+fov = 55.0
+near = 0.1
+far = 5000.0
+script = ExtResource("5_cam")
+controller_path = NodePath("../Controller")
+argus_path = NodePath("../Argus")
+hcm_path = NodePath("../HCM")
+
+[node name="HUD" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("6_hud")
+eo_viewport_path = NodePath("../GimbalView/EOViewport_F")
+ir_viewport_path = NodePath("../GimbalView/IRViewport_F")
+
+[node name="Controller" type="Node3D" parent="."]
+script = ExtResource("2_ctrl")
+argus_path = NodePath("../Argus")
+hcm_path = NodePath("../HCM")
+hud_path = NodePath("../HUD")
+truth_marker_path = NodePath("../TruthMarker")
+estimate_marker_path = NodePath("../EstimateMarker")
+bearing_lines_path = NodePath("../BearingLines")
+enable_ml_bridge = true
