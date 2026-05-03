@@ -58,7 +58,7 @@ void sky() {
     vec3 atmos = mix(vec3(0.0), deep_blue, pow(bubble_fade, 3.0));
     
     vec3 rim_color = vec3(0.3, 0.65, 1.0); 
-    atmos = mix(atmos, rim_color, pow(bubble_fade, 30.0));
+    atmos = mix(atmos, rim_color, pow(bubble_fade, 60.0));
     
     float sun_alignment = max(dot(EYEDIR, sun_dir), 0.0);
     atmos *= (1.0 + pow(sun_alignment, 3.0) * 0.8);

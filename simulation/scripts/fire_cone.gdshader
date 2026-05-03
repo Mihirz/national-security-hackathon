@@ -1,4 +1,5 @@
 shader_type spatial;
+render_mode blend_add, cull_disabled, depth_draw_never, unshaded;
 
 uniform float model_height = 6.0;
 uniform float dissolve_start : hint_range(0.0, 1.0) = 0.001;

@@ -1,11 +1,11 @@
 [gd_scene format=4 uid="uid://ckavqb25bdaul"]
 
-[ext_resource type="Script" path="res://scripts/sim_constants.gd" id="1_const"]
-[ext_resource type="Script" path="res://scripts/sim_controller.gd" id="2_ctrl"]
-[ext_resource type="Script" path="res://scripts/argus_drone.gd" id="3_argus"]
+[ext_resource type="Script" uid="uid://pa4kw5km4fe7" path="res://scripts/sim_constants.gd" id="1_const"]
+[ext_resource type="Script" uid="uid://bvd5opjpk1tct" path="res://scripts/sim_controller.gd" id="2_ctrl"]
+[ext_resource type="Script" uid="uid://c0b35m6k64vgn" path="res://scripts/argus_drone.gd" id="3_argus"]
 [ext_resource type="Material" uid="uid://b88euf6f8vghw" path="res://missile_material.tres" id="3_sugp2"]
-[ext_resource type="Script" path="res://scripts/hcm_target.gd" id="4_hcm"]
-[ext_resource type="Script" path="res://scripts/orbit_camera.gd" id="5_cam"]
+[ext_resource type="Script" uid="uid://btu66uq6umhvb" path="res://scripts/hcm_target.gd" id="4_hcm"]
+[ext_resource type="Script" uid="uid://c7l4p8yqjx5wx" path="res://scripts/orbit_camera.gd" id="5_cam"]
 [ext_resource type="Shader" uid="uid://dotvb8r47ukm6" path="res://scripts/fire_cone.gdshader" id="6_85g3d"]
 [ext_resource type="Script" uid="uid://svttyysorfjg" path="res://scripts/hud.gd" id="6_hud"]
 [ext_resource type="Shader" uid="uid://bkwhcrvk2u3ku" path="res://scripts/sky.gdshader" id="7_sky"]
@@ -117,7 +117,7 @@ noise = SubResource("FastNoiseLite_85g3d")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_choun"]
 render_priority = 0
 shader = ExtResource("6_85g3d")
-shader_parameter/model_height = 6.0
+shader_parameter/model_height = 20.0
 shader_parameter/dissolve_start = 0.001
 shader_parameter/dissolve_length = 0.68800003268
 shader_parameter/gradient_bias = 1.0
@@ -132,7 +132,7 @@ shader_parameter/power_factor = 1.0
 material = SubResource("ShaderMaterial_choun")
 top_radius = 0.015
 bottom_radius = 0.7
-height = 6.0
+height = 20.0
 
 [sub_resource type="SphereMesh" id="m_truth"]
 radius = 8.0
@@ -195,7 +195,7 @@ transform = Transform3D(10, 0, 0, 0, -10, 8.742278e-07, 0, -8.742278e-07, -10, 0
 mesh = SubResource("ArrayMesh_choun")
 
 [node name="cone" type="MeshInstance3D" parent="HCM" unique_id=1095200693]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0.10171151, 15.633015)
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0.102, 22.537)
 mesh = SubResource("CylinderMesh_ya4ey")
 
 [node name="TruthMarker" type="MeshInstance3D" parent="." unique_id=1129462763]

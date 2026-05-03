@@ -20,14 +20,36 @@ const COL_ALERT    := Color(1.0, 0.20, 0.25)
 const COL_DIM      := Color(0.55, 0.70, 0.78)
 const COL_OK       := Color(0.4, 1.0, 0.55)
 
+const _TRAIL_MAX := 300
+const _TRAIL_DT  := 0.5   # seconds between trail samples
+
 var sim: SimController
 var _t: float = 0.0
+var _argus_trail: Array[Vector3] = []
+var _hcm_trail:   Array[Vector3] = []
+var _trail_acc:   float = 0.0
+var _map_range_m: float = 200000.0   # half-range shown on tacmap, smoothed
 
 func bind(controller: SimController) -> void:
 	sim = controller
 
 func _process(delta: float) -> void:
 	_t += delta
+	if sim:
+		_trail_acc += delta
+		if _trail_acc >= _TRAIL_DT:
+			_trail_acc = 0.0
+			_argus_trail.append(sim.argus.truth_position_m)
+			_hcm_trail.append(sim.hcm.truth_position_m)
+			if _argus_trail.size() > _TRAIL_MAX:
+				_argus_trail.pop_front()
+			if _hcm_trail.size() > _TRAIL_MAX:
+				_hcm_trail.pop_front()
+		# Smoothly adapt map range so both objects stay visible.
+		var sep := Vector2(sim.hcm.truth_position_m.x - sim.argus.truth_position_m.x,
+						   sim.hcm.truth_position_m.z - sim.argus.truth_position_m.z).length()
+		var target_range := maxf(sep * 1.1, 50000.0)
+		_map_range_m = lerp(_map_range_m, target_range, minf(delta * 1.5, 1.0))
 	queue_redraw()
 
 func _draw() -> void:
@@ -40,7 +62,16 @@ func _draw() -> void:
 	_draw_fusion_panel(sz)
 	_draw_hotkeys(sz)
 	_draw_center_banner(sz)
-	_draw_compass(sz)
+
+	# Compass + birds-eye tacmap, side by side, bottom-center.
+	const COMP_W := 220.0
+	const TMAP_W := 300.0
+	const GAP    :=   8.0
+	const H      := 300.0
+	var lx := sz.x * 0.5 - (COMP_W + GAP + TMAP_W) * 0.5
+	var ty := sz.y - H - 16.0
+	_draw_compass(Rect2(lx,                ty, COMP_W, H))
+	_draw_tacmap( Rect2(lx + COMP_W + GAP, ty, TMAP_W, H))
 
 # ---------------------------------------------------------------------------
 
@@ -139,32 +170,166 @@ func _draw_center_banner(sz: Vector2) -> void:
 		_label(Vector2(rect2.position.x + 18, rect2.position.y + 19),
 			"RF BLACKOUT — PLASMA SHEATHING", COL_WARN, 12)
 
-func _draw_compass(sz: Vector2) -> void:
-	# Tiny tactical mini-map showing ARGUS, HCM truth, and fusion estimate.
-	var r := 90.0
-	var center := Vector2(sz.x / 2.0, sz.y - r - 24)
-	draw_circle(center, r + 8, COL_PANEL)
-	draw_arc(center, r, 0, TAU, 64, COL_DIM, 1.0)
-	draw_arc(center, r * 0.5, 0, TAU, 64, COL_DIM * 0.6, 1.0)
-	# Map ~250 km range to compass radius.
-	var scale_m_per_px := 250000.0 / r
+func _draw_compass(rect: Rect2) -> void:
+	_panel(rect)
+	_label(rect.position + Vector2(8.0, 14.0), "TACMAP  250 km", COL_ACCENT, 10)
 
+	# Circle centered in the panel below the header.
+	var cx := rect.position.x + rect.size.x * 0.5
+	var cy := rect.position.y + 20.0 + (rect.size.y - 20.0) * 0.5
+	var center := Vector2(cx, cy)
+	var r := minf(rect.size.x * 0.5 - 10.0, (rect.size.y - 26.0) * 0.5)
+
+	draw_circle(center, r + 4.0, Color(0.01, 0.03, 0.06, 1.0))
+	draw_arc(center, r,       0.0, TAU, 64, COL_DIM,       1.0)
+	draw_arc(center, r * 0.5, 0.0, TAU, 64, COL_DIM * 0.6, 1.0)
+
+	var scale_m_per_px := 250000.0 / r
 	var argus_p := sim.argus.truth_position_m
-	var hcm_p := sim.hcm.truth_position_m
+	var hcm_p   := sim.hcm.truth_position_m
+
 	var rel_hcm := Vector2(hcm_p.x - argus_p.x, hcm_p.z - argus_p.z) / scale_m_per_px
 	if rel_hcm.length() > r:
 		rel_hcm = rel_hcm.normalized() * r
-	draw_circle(center, 4, COL_ACCENT)  # ARGUS at center
-	draw_circle(center + rel_hcm, 4, COL_ALERT)
+
+	draw_circle(center, 4.0, COL_ACCENT)            # ARGUS at center
+	draw_circle(center + rel_hcm, 4.0, COL_ALERT)   # HCM truth
 
 	if sim.fusion.has_estimate:
 		var est := sim.fusion.estimated_position_m
 		var rel_est := Vector2(est.x - argus_p.x, est.z - argus_p.z) / scale_m_per_px
 		if rel_est.length() > r:
 			rel_est = rel_est.normalized() * r
-		draw_arc(center + rel_est, 6, 0, TAU, 16, COL_OK, 1.5)
+		draw_arc(center + rel_est, 6.0, 0.0, TAU, 16, COL_OK, 1.5)
 
-	_label(center + Vector2(-r - 4, -r - 14), "TACMAP  250 km", COL_DIM, 10)
+
+func _draw_tacmap(rect: Rect2) -> void:
+	_panel(rect)
+	_label(rect.position + Vector2(8.0, 14.0), "BIRDS-EYE  GLOBAL TRACK", COL_ACCENT, 10)
+
+	# Inner map area.
+	const PAD := 6.0
+	const HDR := 20.0
+	var mr := Rect2(rect.position.x + PAD,
+					rect.position.y + HDR,
+					rect.size.x - PAD * 2.0, rect.size.y - HDR - PAD)
+	draw_rect(mr, Color(0.01, 0.03, 0.06, 1.0), true)
+
+	var mc    := mr.get_center()
+	var ap    := sim.argus.truth_position_m
+	var hp    := sim.hcm.truth_position_m
+	var ox    := (ap.x + hp.x) * 0.5   # world-space origin (midpoint)
+	var oz    := (ap.z + hp.z) * 0.5
+	var scale := minf(mr.size.x, mr.size.y) * 0.5 / _map_range_m   # px per metre
+
+	# Cardinal grid — ~8 lines per half-range, clipped to map rect.
+	var target_sp := _map_range_m * 0.2
+	var grid_sp := 500.0
+	for ns: float in [500.0, 1000.0, 2000.0, 5000.0, 10000.0, 20000.0, 50000.0, 100000.0, 200000.0]:
+		grid_sp = ns
+		if ns >= target_sp:
+			break
+	var half_w_m := mr.size.x * 0.5 / scale
+	var half_h_m := mr.size.y * 0.5 / scale
+	var col_grid := Color(COL_DIM.r * 0.35, COL_DIM.g * 0.35, COL_DIM.b * 0.35, 1.0)
+	var col_axis := Color(COL_DIM.r * 0.65, COL_DIM.g * 0.65, COL_DIM.b * 0.65, 1.0)
+	var xi := floorf((ox - half_w_m) / grid_sp) * grid_sp
+	while xi <= ox + half_w_m + grid_sp:
+		var px := mc.x + (xi - ox) * scale
+		if px >= mr.position.x and px <= mr.end.x:
+			var is_axis := absf(xi - ox) < grid_sp * 0.01
+			draw_line(Vector2(px, mr.position.y), Vector2(px, mr.end.y),
+					  col_axis if is_axis else col_grid, 1.0)
+		xi += grid_sp
+	var zi := floorf((oz - half_h_m) / grid_sp) * grid_sp
+	while zi <= oz + half_h_m + grid_sp:
+		var py := mc.y + (zi - oz) * scale
+		if py >= mr.position.y and py <= mr.end.y:
+			var is_axis := absf(zi - oz) < grid_sp * 0.01
+			draw_line(Vector2(mr.position.x, py), Vector2(mr.end.x, py),
+					  col_axis if is_axis else col_grid, 1.0)
+		zi += grid_sp
+
+	# ARGUS trail — cyan dots, alpha fades with age.
+	var n_a := _argus_trail.size()
+	for i in n_a:
+		var px := _map_pt(mc, ox, oz, scale, _argus_trail[i])
+		if mr.has_point(px):
+			var c := COL_ACCENT
+			c.a = float(i + 1) / float(n_a) * 0.75
+			draw_circle(px, 1.5, c)
+
+	# HCM trail — red dots, alpha fades with age.
+	var n_h := _hcm_trail.size()
+	for i in n_h:
+		var px := _map_pt(mc, ox, oz, scale, _hcm_trail[i])
+		if mr.has_point(px):
+			var c := COL_ALERT
+			c.a = float(i + 1) / float(n_h) * 0.75
+			draw_circle(px, 1.5, c)
+
+	# Fusion estimate ring.
+	if sim.fusion.has_estimate:
+		var est_px := _map_pt(mc, ox, oz, scale, sim.fusion.estimated_position_m)
+		if mr.has_point(est_px):
+			draw_arc(est_px, 5.0, 0.0, TAU, 16, COL_OK, 1.5)
+
+	# ARGUS current position marker.
+	var argus_px := _map_pt(mc, ox, oz, scale, ap)
+	draw_circle(argus_px, 5.0, COL_ACCENT)
+	_label(argus_px + Vector2(6.0, -4.0), "ARGUS", COL_ACCENT, 8)
+
+	# HCM current position marker + velocity vector.
+	var hcm_px := _map_pt(mc, ox, oz, scale, hp)
+	draw_circle(hcm_px, 5.0, COL_ALERT)
+	_label(hcm_px + Vector2(6.0, -4.0), "HCM", COL_ALERT, 8)
+
+	var vel := sim.hcm.velocity_mps
+	if vel.length_squared() > 1.0:
+		var tip_raw := _map_pt(mc, ox, oz, scale, hp + vel * 10.0)
+		# Clamp tip to map rect via parametric line-rect intersection.
+		var tip := tip_raw
+		if not mr.has_point(tip_raw):
+			var d := tip_raw - hcm_px
+			var t := 1.0
+			if d.x > 0.0: t = minf(t, (mr.end.x     - hcm_px.x) / d.x)
+			elif d.x < 0.0: t = minf(t, (mr.position.x - hcm_px.x) / d.x)
+			if d.y > 0.0: t = minf(t, (mr.end.y     - hcm_px.y) / d.y)
+			elif d.y < 0.0: t = minf(t, (mr.position.y - hcm_px.y) / d.y)
+			tip = hcm_px + d * maxf(t, 0.0)
+		draw_line(hcm_px, tip, COL_WARN, 1.5)
+		var dir  := (tip - hcm_px).normalized()
+		var perp := Vector2(-dir.y, dir.x)
+		draw_line(tip, tip - dir * 5.0 + perp * 3.0, COL_WARN, 1.0)
+		draw_line(tip, tip - dir * 5.0 - perp * 3.0, COL_WARN, 1.0)
+
+	# Map border drawn last so trail dots don't bleed over it.
+	draw_rect(mr, COL_DIM * 0.4, false, 1.0)
+
+	# North arrow (top-right corner of inner map).
+	var na := Vector2(mr.end.x - 14.0, mr.position.y + 14.0)
+	draw_line(na + Vector2(0.0,  7.0), na + Vector2(0.0, -7.0), COL_DIM, 1.0)
+	draw_line(na + Vector2(0.0, -7.0), na + Vector2(-3.0, -2.0), COL_DIM, 1.0)
+	draw_line(na + Vector2(0.0, -7.0), na + Vector2( 3.0, -2.0), COL_DIM, 1.0)
+	_label(na + Vector2(-2.0, 5.0), "N", COL_DIM, 7)
+
+	# Adaptive scale bar (bottom-left of inner map).
+	var bar_max_px := mr.size.x * 0.28
+	var bar_km := 1.0
+	for km: float in [1.0, 5.0, 10.0, 25.0, 50.0, 100.0, 200.0, 500.0]:
+		if km * 1000.0 * scale < bar_max_px:
+			bar_km = km
+	var bar_len := bar_km * 1000.0 * scale
+	var bar_y   := mr.end.y - 9.0
+	var bar_x   := mr.position.x + 8.0
+	draw_line(Vector2(bar_x, bar_y),            Vector2(bar_x + bar_len, bar_y),            COL_DIM * 0.8, 1.5)
+	draw_line(Vector2(bar_x,            bar_y - 3.0), Vector2(bar_x,            bar_y + 3.0), COL_DIM * 0.8, 1.0)
+	draw_line(Vector2(bar_x + bar_len,  bar_y - 3.0), Vector2(bar_x + bar_len,  bar_y + 3.0), COL_DIM * 0.8, 1.0)
+	_label(Vector2(bar_x, bar_y - 11.0), "%.0f km" % bar_km, COL_DIM, 7)
+
+
+func _map_pt(mc: Vector2, ox: float, oz: float, scale: float, p: Vector3) -> Vector2:
+	return mc + Vector2((p.x - ox) * scale, (p.z - oz) * scale)
 
 # ---------------------------------------------------------------------------
 # Drawing helpers.
