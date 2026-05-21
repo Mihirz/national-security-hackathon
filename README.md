@@ -1,6 +1,6 @@
 # Project ARGUS
 
-**A high-altitude, solar-powered glider that detects and tracks hypersonic cruise missiles — and a fleet of them, cheap enough to blanket a theater.**
+**A high-altitude, solar-powered glider that detects and tracks hypersonic cruise missiles**
 
 Hypersonic cruise missiles (HCMs) fly low, fast (~Mach 5), and maneuver to slip
 under and around ground radar. ARGUS answers that with persistence and altitude
